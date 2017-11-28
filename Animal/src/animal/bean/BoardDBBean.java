@@ -19,7 +19,7 @@ public class BoardDBBean {
 	
 	private BoardDBBean() {
 		try {
-			String dbURL = "jdbc:mysql://localhost:3306/web?autoReconnect=true&useSSL=false";
+			String dbURL = "jdbc:mysql://203.249.22.34:3306/web?autoReconnect=true&useSSL=false";
 			String dbID = "jy";
 			String dbPW = "1365";
 			Class.forName("com.mysql.jdbc.Driver");
@@ -30,7 +30,7 @@ public class BoardDBBean {
 	}
 	
 	
-	//ÀÛ¼ºµÉ ±Û ¹øÈ£ ±¸ÇÏ±â
+	//ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È£ ï¿½ï¿½ï¿½Ï±ï¿½
 	public int getNext_board() {
 		String SQL="SELECT board_num FROM board ORDER BY board_num DESC";
 		try {
@@ -39,14 +39,14 @@ public class BoardDBBean {
 			if(rs.next()) {
 				return rs.getInt(1)+1;
 			}
-			return 1;//ÇöÀç°¡ Ã¹¹øÂ° °Ô½Ã±ÛÀÎ °æ¿ì
+			return 1;//ï¿½ï¿½ï¿½ç°¡ Ã¹ï¿½ï¿½Â° ï¿½Ô½Ã±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		}catch(Exception e) {
 			e.printStackTrace();	
 		}
 		return -1;
 	}
 	
-	//ÀÛ¼ºµÉ ±Û ¹øÈ£ ±¸ÇÏ±â
+	//ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È£ ï¿½ï¿½ï¿½Ï±ï¿½
 	public int getNext_news() {
 		String SQL="SELECT news_num FROM board ORDER BY board_num DESC";
 		try {
@@ -55,14 +55,14 @@ public class BoardDBBean {
 			if(rs.next()) {
 				return rs.getInt(1)+1;
 			}
-			return 1;//ÇöÀç°¡ Ã¹¹øÂ° °Ô½Ã±ÛÀÎ °æ¿ì
+			return 1;//ï¿½ï¿½ï¿½ç°¡ Ã¹ï¿½ï¿½Â° ï¿½Ô½Ã±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		}catch(Exception e) {
 			e.printStackTrace();	
 		}
 		return -1;
 	}
 		
-	//ÇöÀç ½Ã°£À» ±¸ÇÏ´Â ¸Þ¼Òµå
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼Òµï¿½
 	public String getDate() {
 		String SQL="SELECT NOW()";
 		try {
@@ -76,7 +76,7 @@ public class BoardDBBean {
 		return "";
 	}
 	
-	//´º½ºÇÇµå °Ô½Ã±Û µî·Ï
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½
 	public int news_write(BoardDataBean board) {
 		String SQL = "INSERT INTO board (board_num,news_num,user_id,board_title,board_content,board_image,board_path,news_visible,board_date) "
 				+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -98,7 +98,7 @@ public class BoardDBBean {
 		return -1;
 	}
 	
-	//´º½ºÇÇµå °Ô½Ã±Û º¸±â
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public ArrayList<BoardDataBean> news_getlist(String user_id){
 		String SQL="SELECT * FROM board WHERE news_num > 0 AND user_id = ?";
 		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
@@ -128,7 +128,7 @@ public class BoardDBBean {
 		return null;
 	}
 	
-	//´º½ºÇÇµå °Ô½Ã±Û ºÒ·¯¿À±â
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ ï¿½Ô½Ã±ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 	public BoardDataBean news_getboard(int news_num){
 		String SQL="SELECT * FROM board WHERE news_num = ?";
 		BoardDataBean board = new BoardDataBean();

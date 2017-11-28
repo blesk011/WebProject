@@ -15,6 +15,8 @@
   <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <link href="./Resources/css/sb-admin.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <script src="js/bootstrap.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script type="text/javascript">
 	function logout(){

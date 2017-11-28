@@ -28,10 +28,10 @@ public class LoginAction extends HttpServlet {
 		String user_id = request.getParameter("user_id");
 		String user_pw=request.getParameter("user_pw");
 		UserDBBean userdb = UserDBBean.getinstance();
-		//ºñ¾îÀÖÀ» °æ¿ì
+		//ë¹„ì–´ìˆì„ ê²½ìš°
 		if( user_id == null || user_id.equals("") || user_pw == null || user_pw.equals("")) {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "¸ğµç ³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ëª¨ë“  ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 			response.sendRedirect("login.jsp");
 			return;
 		}	
@@ -39,22 +39,22 @@ public class LoginAction extends HttpServlet {
 		int result=userdb.login(user_id, user_pw);
 		
 		if(result == 1) {
-			//·Î±×ÀÎ ¼º°ø½Ã id ¼¼¼Ç ºÎ¿©
+			//ë¡œê·¸ì¸ ì„±ê³µì‹œ id ì„¸ì…˜ ë¶€ì—¬
 			request.getSession().setAttribute("user_id",user_id);
-			response.sendRedirect("index.jsp"); //complete page·Î redirectÇØ¾ßÇÔ
+			response.sendRedirect("index.jsp"); //complete pageë¡œ redirectí•´ì•¼í•¨
 			
 			return;
 		}
 		
 		else if(result == 0) {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş¼¼Áö");
-			request.getSession().setAttribute("messageContent", "¾ÆÀÌµğ È¤Àº ºñ¹Ğ¹øÈ£°¡ ¸ÂÁö ¾Ê½À´Ï´Ù.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì„¸ì§€");
+			request.getSession().setAttribute("messageContent", "ì•„ì´ë”” í˜¹ì€ ë¹„ë°€ë²ˆí˜¸ê°€ ë§ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			response.sendRedirect("login.jsp");
 		}
 		
 		else {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "³»ºÎÀûÀÎ ¿À·ùÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ë‚´ë¶€ì ì¸ ì˜¤ë¥˜ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”.");
 			response.sendRedirect("login.jsp");
 		}
 		

@@ -23,7 +23,7 @@ public class ConfirmAction extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");		
 		String user_id = request.getParameter("user_id");
-		//ÁÖ¾îÁø idÀÇ Áßº¹¿©ºÎ¸¦ Ã¼Å©ÇØ °ªÀ» ¹İÈ¯.
+		//ì£¼ì–´ì§„ idì˜ ì¤‘ë³µì—¬ë¶€ë¥¼ ì²´í¬í•´ ê°’ì„ ë°˜í™˜.
 		UserDBBean manager = UserDBBean.getinstance();
 		int check= manager.registerCheck(user_id);
 		response.getWriter().write(manager.registerCheck(user_id)+"");

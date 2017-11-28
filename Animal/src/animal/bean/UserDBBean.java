@@ -15,7 +15,7 @@ public class UserDBBean {
 	
 	private UserDBBean() {
 		try {
-			String dbURL = "jdbc:mysql://localhost:3306/web?autoReconnect=true&useSSL=false";
+			String dbURL = "jdbc:mysql://203.249.22.34:3306/web?autoReconnect=true&useSSL=false";
 			String dbID = "jy";
 			String dbPW = "1365";
 			Class.forName("com.mysql.jdbc.Driver");
@@ -25,7 +25,7 @@ public class UserDBBean {
 		}
 	}
 	
-	//ÇöÀç ½Ã°£À» ±¸ÇÏ´Â ¸Þ¼Òµå
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼Òµï¿½
 	public String getDate() {
 		String SQL="SELECT NOW()";
 		try {
@@ -39,7 +39,7 @@ public class UserDBBean {
 		return "";
 	}
 	
-	//·Î±×ÀÎÀ» ÇÏ´Â ¸Þ¼Òµå
+	//ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Þ¼Òµï¿½
 	public int login(String user_id,String user_pw) {
 		String SQL = "SELECT user_pw FROM USER WHERE user_id = ?";
 		try {
@@ -48,17 +48,17 @@ public class UserDBBean {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				if(rs.getString(1).equals(user_pw)) 
-					return 1; //·Î±×ÀÎ
+					return 1; //ï¿½Î±ï¿½ï¿½ï¿½
 				else
-					return 0; //ºñ¹øÀÌ Æ²¸²
+					return 0; //ï¿½ï¿½ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -1; //¾ÆÀÌµð ¾øÀ½
+		return -1; //ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 	
-	//¾ÆÀÌµð Áßº¹È®ÀÎ
+	//ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ßºï¿½È®ï¿½ï¿½
 	public int registerCheck(String user_id) {
 		String SQL="SELECT * FROM USER WHERE user_id = ?";
 		
@@ -87,7 +87,7 @@ public class UserDBBean {
 		return -1;//error
 	}
 		
-	//È¸¿ø°¡ÀÔ
+	//È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int register(UserDataBean member) {
 		String SQL="INSERT INTO USER VALUES (?, ?, ?, ?, ?)";
 		
@@ -113,7 +113,7 @@ public class UserDBBean {
 			return -1;//error
 		}
 		
-	//È¸¿ø Á¤º¸
+	//È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public UserDataBean getUser(String user_id) {
 		String sql = "select * from user where user_id=?";
 		UserDataBean user = new UserDataBean();
@@ -143,7 +143,7 @@ public class UserDBBean {
 			return user;
 		}
 	
-	//È¸¿ø Å»Åð
+	//È¸ï¿½ï¿½ Å»ï¿½ï¿½
 	public boolean deleteUser(String user_id) {
 		String sql = "delete from user where user_id=?";
 		try {

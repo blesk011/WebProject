@@ -27,7 +27,7 @@ public class RegisterAction extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		UserDBBean manager = UserDBBean.getinstance();
 		UserDataBean user = new UserDataBean(); 
-		//È¸¿ø°¡ÀÔ Á¤º¸
+		//íšŒì›ê°€ì… ì •ë³´
 		user.setUser_name(request.getParameter("user_name"));
 		user.setUser_phone(request.getParameter("user_phone"));
 		user.setUser_id(request.getParameter("user_id"));
@@ -36,15 +36,15 @@ public class RegisterAction extends HttpServlet {
 		
 		
 		if(user.getUser_name() == null || user.getUser_name().equals("") || user.getUser_phone() == null || user.getUser_phone().equals("") || user.getUser_id() == null || user.getUser_id().equals("") || user.getUser_pw() == null || user.getUser_pw().equals("") || check_passwd == null || check_passwd.equals("")) {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "¸ğµç ³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ëª¨ë“  ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 			response.sendRedirect("register.jsp");
 			return;
 		}
 		
 		if(!user.getUser_pw().equals(check_passwd)) {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			response.sendRedirect("register.jsp");
 			return;
 		}
@@ -53,14 +53,14 @@ public class RegisterAction extends HttpServlet {
 		int result = manager.register(user);
 		
 		if(result ==1) {
-			request.getSession().setAttribute("messageType", "¼º°ø ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù. ·Î±×ÀÎ ÇØÁÖ¼¼¿ä!");
+			request.getSession().setAttribute("messageType", "ì„±ê³µ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”!");
 			response.sendRedirect("login.jsp");
 		}
 		
 		else {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "ÀÌ¹Ì Á¸ÀçÇÏ´Â È¸¿øÀÔ´Ï´Ù.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” íšŒì›ì…ë‹ˆë‹¤.");
 			response.sendRedirect("login.jsp");
 		}
 		}

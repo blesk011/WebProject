@@ -42,20 +42,20 @@ public class NewsWriteAction extends HttpServlet {
     	String board_image = "";
     	String newFileName = "";
     	int count = 1;
-    	//<½ÃÀÛ>¾÷·Îµå µÈ ÆÄÀÏ ÀúÀå---------------------------------------------------------------------------------------------------------------
+    	//<ì‹œì‘>ì—…ë¡œë“œ ëœ íŒŒì¼ ì €ì¥---------------------------------------------------------------------------------------------------------------
 		MultipartRequest multipartrequest = new MultipartRequest(request, board_path, maxSize, enType ,new DefaultFileRenamePolicy());
 		
-		//ÆÄ¶ó¹ÌÅÍ°ª ¹Ş¾Æ¿À±â
+		//íŒŒë¼ë¯¸í„°ê°’ ë°›ì•„ì˜¤ê¸°
 		boarddt.setBoard_title(multipartrequest.getParameter("board_title"));
 		boarddt.setUser_id((String)request.getSession().getAttribute("user_id"));
 		boarddt.setBoard_content(multipartrequest.getParameter("board_content"));
 		boarddt.setNews_visible(Integer.parseInt(multipartrequest.getParameter("news_visible")));
 
-		//ÀúÀåÇÒ ÀÌ¸§ »ı¼º
+		//ì €ì¥í•  ì´ë¦„ ìƒì„±
 		newFileName = board.getNext_board() + boarddt.getUser_id();
 		oldFileNames = multipartrequest.getFileNames();
 		
-		//ÀÔ·Â¹ŞÀº »çÁøµéÀÇ ÀÌ¸§À» ¸ğµÎ ¼öÁ¤
+		//ì…ë ¥ë°›ì€ ì‚¬ì§„ë“¤ì˜ ì´ë¦„ì„ ëª¨ë‘ ìˆ˜ì •
 		while(oldFileNames.hasMoreElements()) {
 			String parameter = (String)oldFileNames.nextElement();
 			if(multipartrequest.getOriginalFileName(parameter) == null)
@@ -69,7 +69,7 @@ public class NewsWriteAction extends HttpServlet {
 		boarddt.setBoard_image(board_image);
 		boarddt.setBoard_path(board_path);
 		
-	   //<³¡>¾÷·Îµå µÈ ÆÄÀÏ ÀúÀå---------------------------------------------------------------------------------------------------------------
+	   //<ë>ì—…ë¡œë“œ ëœ íŒŒì¼ ì €ì¥---------------------------------------------------------------------------------------------------------------
 		System.out.println(boarddt.getUser_id());
 		System.out.println(boarddt.getBoard_title());
 		System.out.println(boarddt.getBoard_content());
@@ -78,8 +78,8 @@ public class NewsWriteAction extends HttpServlet {
 		System.out.println(boarddt.getNews_visible());
 		
 		if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
-			request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-			request.getSession().setAttribute("messageContent", "¸ğµç ³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.");
+			request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+			request.getSession().setAttribute("messageContent", "ëª¨ë“  ë‚´ìš©ì„ ì…ë ¥í•˜ì„¸ìš”.");
 			response.sendRedirect("news_write.jsp");
 			return;
 		}
@@ -88,8 +88,8 @@ public class NewsWriteAction extends HttpServlet {
 			int result = board.news_write(boarddt);
 			
 			if(result == -1) {
-				request.getSession().setAttribute("messageType", "¿À·ù ¸Ş½ÃÁö");
-				request.getSession().setAttribute("messageContent", "±Û¾²±â¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
+				request.getSession().setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+				request.getSession().setAttribute("messageContent", "ê¸€ì“°ê¸°ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
 				response.sendRedirect("news_write.jsp");
 				return;
 			}

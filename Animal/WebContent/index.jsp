@@ -11,7 +11,12 @@
 	<!-- 상단바 -->
 	<jsp:include page="form.jsp"/>
 	<!-- 슬라이드 -->
+	<div class="content-wrapper">
+    	<div class="container-fluid"><br>
+    	<center><h1>동물을 사랑하는 사람들의 모임 Animal<img src="images/dog_icon.jpg" width="50" height="50"></h1></center>
 	<%@include file="slide.jsp" %>
+		</div>
+	</div>
     <!-- copyright-->
     <footer class="sticky-footer">
       <div class="container">

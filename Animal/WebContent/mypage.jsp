@@ -18,20 +18,14 @@
   <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <link href="./Resources/css/sb-admin.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script type="text/javascript">
-	function logout(){
-		var user_id = $('#user_id').val();
-		$.ajax({
-			type: 'POST',
-			url: './LogoutAction',
-		})
-	}
-	</script>
 </head>
 <!-- 메뉴부분 -->
 <body>
  <jsp:include page="form.jsp"/>
       <!-- Breadcrumbs-->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+    <br>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="#">${user_id}님의 뉴스피드</a>
@@ -112,6 +106,8 @@
             </div>
             <%} %>
          </div>
+        </div>
+       </div>
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
@@ -120,11 +116,5 @@
         </div>
       </div>
     </footer>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
-   
 </body>
-
 </html>

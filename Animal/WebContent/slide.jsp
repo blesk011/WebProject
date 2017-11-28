@@ -10,13 +10,13 @@
 	 	</ol>
 	 	<div class="carousel-inner">
 	 		<div class="item active">
-	 			<img src="images/cat.jpg" width="300" height="300">
+	 			<img src="images/cat.jpg" width="500" height="500">
 	 		</div>
 	 		<div class="item">
-	 			<img src="images/cat2.jpg" width="300" height="300">
+	 			<img src="images/cat2.jpg" width="500" height="500">
 	 		</div>
 	 		<div class="item">
-	 			<img src="images/dog.jpg" width="300" height="300">
+	 			<img src="images/dog.jpg" width="500" height="500">
 	 		</div>
 	 	</div>
 	 		<a class="left carousel-control" href="#myCarousel" data-slide="prev">

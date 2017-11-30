@@ -20,7 +20,7 @@
 		
 		<ul>
 			<li>스탭 관리
-			<li><button id="step">스탭</button> <!-- 각 페이지마다 스탭을 임명하는 페이지 -->
+			<li><button id="staff">스탭</button> <!-- 각 페이지마다 스탭을 임명하는 페이지 -->
 			
 		</ul>
 		

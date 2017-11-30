@@ -11,21 +11,21 @@ var status = true;
 
 $(document).ready(function(){
 	$("#member").click(function(){//[회원]버튼 클릭
-		window.location.href="/Animal/Controller?command=MngrUserListAction";
+		window.location.href="/Animal/MngrUserListAction";
 	});
 	$("#mBanned").click(function(){//[강제탈퇴맴버]버튼 클릭
-		window.location.href="Animal/MngrBannedUserListAction";
+		window.location.href="/Animal/MngrBannedUserListAction";
 	});
-	$("#step").click(function(){//[스탭]버튼 클릭
-		window.location.href("/shoppingmall/mg/bookList.do?book_kind=all");
+	$("#staff").click(function(){//[스탭]버튼 클릭
+		window.location.href("/Animal/MngrStaffListAction");
 	});
 	$("#menu").click(function(){//[메뉴]버튼 클릭
-		window.location.href='menu/boardList.jsp';
+		window.location.href='/Animal/menu/boardList.jsp';
 	});
 	$("#spam").click(function(){//[신고글]버튼 클릭
-		window.location.href("/shoppingmall/mg/spamList.do");
+		window.location.href("/Animal/mg/spamList.do");
 	});
 	$("#deleted").click(function(){//[삭제글,댓글]버튼 클릭
-		window.location.href("/shoppingmall/mg/qnaList.do");
+		window.location.href("/Animal/qnaList.do");
 	});
 });

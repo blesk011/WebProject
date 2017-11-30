@@ -11,6 +11,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 <script src="/newWebProject/mngr/member/fullMemberManage.js"></script>
+<jsp:include page="/mngr/managerMain.jsp" />
 <div id="bannedUserList">
 		<ul>
 			<li>활동 정지 회원수 : ${count}</li>
@@ -33,4 +34,4 @@
 		</table>
 </div>
 <hr>
-<button onclick="location.href='mngr/managerMain.jsp'">돌아가기</button>
+<center><button onclick="location.href='mngr/managerMain.jsp'" class = "btn btn-default" align="center">돌아가기</button></center>

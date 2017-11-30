@@ -74,6 +74,7 @@ public class LikeDBBean {
 		}
 		return -1;
 	}
+	
 	//이미 좋아요 한 사람인지 check 하나의 게시글을 여러번 좋아요 할 수 없음
 	public int check_id(String user_id, int board_num) {
 		String SQL="SELECT * FROM user_like WHERE user_id = ? AND board_num = ?";
@@ -90,27 +91,5 @@ public class LikeDBBean {
 		}
 			return -1;	
 	}
-	
-	//현재글을 좋아요한 user들의 list를 뽑음
-	public ArrayList<String> getUser(int board_num) {
-		String SQL="SELECT user_id FROM user_like WHERE board_num = ? ";
-		ArrayList<String> list = new ArrayList<String>();
-			
-		try {
-				PreparedStatement pstmt=conn.prepareStatement(SQL);
-				pstmt.setInt(1, board_num);
-				rs=pstmt.executeQuery();
-
-				while(rs.next()) {
-					String user_id;
-					user_id = rs.getString("user_id");
-					list.add(user_id);
-				}
-				return list;
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		return null;
-		}
 	
 }

@@ -43,7 +43,7 @@
             <!-- Example Social Card-->
             <% 
                BoardDBBean board = BoardDBBean.getinstance();
-               ArrayList<BoardDataBean> preboarddt =board.news_getlist(request.getParameter("click_id"));
+               ArrayList<BoardDataBean> preboarddt =board.news_getlist((String)request.getAttribute("click_id"));
                ArrayList<BoardDataBean> boarddt = new ArrayList<BoardDataBean>();
          
                if(user_id.equals(request.getAttribute("click_id"))){
@@ -74,6 +74,8 @@
               <div class="card-body py-2 small">
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                   <i class="fa fa-fw fa-thumbs-up"></i>Like</a>
+                <a class="mr-3 d-inline-block" href="./Controller?action=declaration&board_num=<%=boarddt.get(i).getBoard_num()%>&news_num=<%=boarddt.get(i).getNews_num()%>">
+                  <i class="fa fa-fw fa-thumbs-up"></i>declaration</a>
                 <% if(user_id.equals(request.getAttribute("click_id"))){ %>
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                 	<i class="fa fa-fw fa-wrench"></i>update</a>

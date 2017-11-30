@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import animal.bean.BoardDBBean;
 import animal.bean.BoardDataBean;
+import animal.bean.DeclarationDBBean;
+import animal.bean.DeclarationDataBean;
+import animal.bean.LikeDBBean;
 import animal.bean.UserDBBean;
 
 @WebServlet("/Controller")
@@ -29,6 +32,8 @@ public class Controller extends HttpServlet {
 		String action = request.getParameter("action");
 		BoardDBBean board = BoardDBBean.getinstance();
 		UserDBBean user = UserDBBean.getinstance();
+		LikeDBBean like = LikeDBBean.getinstance();
+		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
 		
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
@@ -126,6 +131,45 @@ public class Controller extends HttpServlet {
 			board.news_delete(Integer.parseInt(request.getParameter("board_num")));
 			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
 			address = "mypage.jsp";
+		}
+		
+		//신고 폼으로 매칭시켜주는 부분
+		else if(action.equals("declaration")) {
+			request.setAttribute("board_num", request.getParameter("board_num"));
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			request.setAttribute("news_num", request.getParameter("news_num"));
+			address = "declaration.jsp";
+			}
+		
+		//신고 DB에 저장시켜주는 부분
+		else if(action.equals("declaration_comp")){
+			DeclarationDataBean declarationdt = new DeclarationDataBean();
+			declarationdt.setBoard_num(Integer.parseInt(request.getParameter("board_num")));
+			declarationdt.setUser_id((String)request.getSession().getAttribute("user_id"));
+			declarationdt.setDeclaration_content(request.getParameter("declaration_content"));
+			
+			if(declaration.check_id(declarationdt) == 1) {
+				System.out.println("잉");
+				request.getSession().setAttribute("messageType", "오류 메시지");
+				request.getSession().setAttribute("messageContent", "이미 신고 하셨습니다.");
+				request.setAttribute("board_num", declarationdt.getBoard_num());
+				address = "index.jsp";
+			}
+			
+			else {
+				declaration.declaration(declarationdt);
+				request.getSession().setAttribute("messageType", "확인 메시지");
+				request.getSession().setAttribute("messageContent", "신고 완료했습니다.");
+				if(request.getParameter("news_num") == null) {
+					request.setAttribute("board_num", declarationdt.getBoard_num());
+					address = "index.jsp"; //board만들어지면 경로 수정
+				}
+				else {
+					request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+					address = "mypage.jsp";
+				}
+			}
+
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);

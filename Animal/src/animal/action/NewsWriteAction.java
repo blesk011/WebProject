@@ -52,7 +52,8 @@ public class NewsWriteAction extends HttpServlet {
 		boarddt.setNews_visible(Integer.parseInt(multipartrequest.getParameter("news_visible")));
 
 		//저장할 이름 생성
-		newFileName = board.getNext_board() + boarddt.getUser_id();
+		String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());
+		newFileName = board.getNext_board() + boarddt.getUser_id() + now;
 		oldFileNames = multipartrequest.getFileNames();
 		
 		//입력받은 사진들의 이름을 모두 수정

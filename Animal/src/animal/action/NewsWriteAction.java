@@ -70,12 +70,6 @@ public class NewsWriteAction extends HttpServlet {
 		boarddt.setBoard_path(board_path);
 		
 	   //<끝>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
-		System.out.println(boarddt.getUser_id());
-		System.out.println(boarddt.getBoard_title());
-		System.out.println(boarddt.getBoard_content());
-		System.out.println(boarddt.getBoard_image());
-		System.out.println(boarddt.getBoard_path());
-		System.out.println(boarddt.getNews_visible());
 		
 		if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
 			request.getSession().setAttribute("messageType", "오류 메시지");

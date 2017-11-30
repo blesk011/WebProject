@@ -111,14 +111,17 @@ public class BoardDBBean {
 				BoardDataBean board = new BoardDataBean();
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
 				board.setBoard_content(rs.getString("board_content"));
 				board.setBoard_image(rs.getString("board_image"));
 				board.setBoard_path(rs.getString("board_path"));
-				board.setNews_visible(rs.getInt("news_visible"));
 				board.setBoard_date(rs.getString("board_date"));
 				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrab"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
 				list.add(board);
 			}
 			return list;
@@ -140,13 +143,17 @@ public class BoardDBBean {
 			while(rs.next()) {
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
 				board.setBoard_content(rs.getString("board_content"));
 				board.setBoard_image(rs.getString("board_image"));
 				board.setBoard_path(rs.getString("board_path"));
-				board.setNews_visible(rs.getInt("news_visible"));
 				board.setBoard_date(rs.getString("board_date"));
+				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrab"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
 			}
 			return board;
 		}catch(Exception e) {
@@ -199,5 +206,41 @@ public class BoardDBBean {
 	         e.printStackTrace();
 	      }
 	      return -1;
+	}
+	public ArrayList<BoardDataBean> getList() {
+		ArrayList<BoardDataBean> list = new ArrayList<>();
+		try {
+			String sql = "select * from board";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardDataBean board = new BoardDataBean();
+				board.setBoard_num(rs.getInt("board_num"));
+				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
+				board.setUser_id(rs.getString("user_id"));
+				board.setBoard_title(rs.getString("board_title"));
+				board.setBoard_content(rs.getString("board_content"));
+				board.setBoard_image(rs.getString("board_image"));
+				board.setBoard_path(rs.getString("board_path"));
+				board.setBoard_date(rs.getString("board_date"));
+				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrap"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
+				list.add(board);
+			}
+		} catch (Exception e) {
+			System.out.println("getAllUser err : " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e2) {
+			}
+		}
+		return list;
 	}
 }

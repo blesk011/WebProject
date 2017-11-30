@@ -109,13 +109,23 @@ public class Controller extends HttpServlet {
 			address = "news_write.jsp";
 		}
 		
+		//타임라인 폼을 매칭시켜주는 부분
 		else if(action.equals("mypage")) {
 			request.setAttribute("click_id", request.getParameter("click_id"));
 			address = "mypage.jsp";
 		}
 		
+		//타임라인 글 수정 폼을 매칭시켜주는 부분
 		else if(action.equals("news_update")) {
-			BoardDataBean boarddt = board.news_getboard(Integer.parseInt(request.getParameter("")));
+			request.setAttribute("board_num",request.getParameter("board_num"));
+			address = "news_update.jsp";
+		}
+		
+		//타임라인 글 삭제
+		else if(action.equals("news_delete")) {
+			board.news_delete(Integer.parseInt(request.getParameter("board_num")));
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			address = "mypage.jsp";
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);

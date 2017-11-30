@@ -6,6 +6,7 @@ public class UserDataBean {
 	private String user_pw;
 	private String user_phone;
 	private String user_date;
+	private int user_available;
 	
 	public String getUser_phone() {
 		return user_phone;
@@ -37,4 +38,11 @@ public class UserDataBean {
 	public void setUser_date(String user_date) {
 		this.user_date = user_date;
 	}
+	public int getUser_available() {
+		return user_available;
+	}
+	public void setUser_available(int user_available) {
+		this.user_available = user_available;
+	}
+	
 }

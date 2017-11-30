@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="animal.bean.*" %>
 <!DOCTYPE html>
 <html>
 <!-- 부트스트랩 부분 -->
@@ -20,11 +21,12 @@
   <div class="container">
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">글수정</div>
-      <form method="post" action="./NewsWriteAction" enctype="multipart/form-data">
+      <form method="post" action="./NewsUpdate" enctype="multipart/form-data">
       <div class="card-body">
+      <% BoardDataBean board = BoardDBBean.getinstance().news_getboard(Integer.parseInt(request.getParameter("board_num"))); %>
           <div class="form-group">
             <label>글제목</label>
-            <input class="form-control" type="text" name="board_title" placeholder="Title">
+            <input class="form-control" type="text" name="board_title" placeholder="Title" value="<%=board.getBoard_title()%>">
           </div>
           <div class="form-group">
           	<select class="form-control" id="news_visible" name="news_visible">
@@ -35,15 +37,28 @@
           </div>
           <div class="form-group">
             <label>내용</label>
-           	<textarea rows="20" cols="20" class="form-control" name="board_content"></textarea>
+           	<textarea rows="20" cols="20" class="form-control" name="board_content"><%=board.getBoard_content()%></textarea>
           </div>
           <div class="form-group">
-            <label>사진</label>
+          <center>
+          	<label>업로드된 파일 목록</label><br>
+          	<%
+          		String image = board.getBoard_image();
+          		String[] images = image.split("/");
+          		for(int i = 0; i < images.length; i++){
+          	%>
+          		<img src="<%= board.getBoard_path() %>\<%= images[i] %>" height= 100px width=100px>&nbsp;<input type="checkbox" name="oldfile" value="<%=i%>"><br>
+          	<%}%>
+          	</center>
+          </div>
+          <div class="form-group">
+            <label>최대 업로드 파일 수: 3개</label><br>
            	파일: <input type="file" class="form-control" name="file1"><br>
 			파일: <input type="file" class="form-control" name="file2"><br>
 			파일: <input type="file" class="form-control" name="file3"><br>
           </div>
           </div>
+          <input type="hidden" name="board_num" value="<%=board.getBoard_num() %>">
           <input type="submit" class="btn btn-primary btn-block" value="글쓰기">
         </form>
       </div>

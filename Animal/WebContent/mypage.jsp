@@ -10,8 +10,6 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
   <title>Animal</title>
   <link href="./Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -32,7 +30,7 @@
         </li>
       </ol>
       <% String user_id = (String)request.getSession().getAttribute("user_id");
-      	if(user_id.equals(request.getParameter("click_id"))){ %>
+      	if(user_id.equals(request.getAttribute("click_id"))){%>
       	<a href="./Controller?action=news_write"><button type="button" class="btn btn-default">글쓰기</button></a>
       	<a href="./Controller?action=confirm"><button type="button" class="btn btn-default">정보 수정</button></a>
       	<a href="#"><button type="button" class="btn btn-default">스크랩함</button></a>
@@ -45,63 +43,42 @@
             <!-- Example Social Card-->
             <% 
                BoardDBBean board = BoardDBBean.getinstance();
-               ArrayList<BoardDataBean> boarddt =board.news_getlist((String)request.getSession().getAttribute("user_id"));
+               ArrayList<BoardDataBean> preboarddt =board.news_getlist(request.getParameter("click_id"));
+               ArrayList<BoardDataBean> boarddt = new ArrayList<BoardDataBean>();
+         
+               if(user_id.equals(request.getAttribute("click_id"))){
+            	  boarddt = preboarddt;
+            	  }
+               else{
+            	  for(int j = 0; j < preboarddt.size(); j++){
+            		if(preboarddt.get(j).getNews_visible() == 0){
+            		   boarddt.add(preboarddt.get(j));
+            			  }
+            		  }
+            	 }
                for(int i = 0; i < boarddt.size(); i++){
             	   String image = boarddt.get(i).getBoard_image();
 				   String[] images = image.split("/");
             %>
             <div class="card mb-3">
               <a href="#">
-                <img class="card-img-top img-fluid w-100" src="<%= boarddt.get(i).getBoard_path()%>\<%=images[0]%>" alt="">
+                <img class="card-img-top" width="300" height="500" src="<%= boarddt.get(i).getBoard_path()%>\<%=images[0]%>" alt="">
               </a>
               <div class="card-body">
                 <h6 class="card-title mb-1"><a href="./Controller?action=mypage&click_id=<%=boarddt.get(i).getUser_id()%>"><%=boarddt.get(i).getUser_id() %></a></h6>
+                <h7 class="card-title mb-2"><%=boarddt.get(i).getBoard_title() %></h7>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_content() %></p>
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">
-                <a class="mr-3 d-inline-block" href="#">
+                <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                   <i class="fa fa-fw fa-thumbs-up"></i>Like</a>
-                <a class="mr-3 d-inline-block" href="#">
-                  <i class="fa fa-fw fa-comment"></i>Comment</a>
-                <a class="mr-3 d-inline-block" href="#">
+                <% if(user_id.equals(request.getAttribute("click_id"))){ %>
+                <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                 	<i class="fa fa-fw fa-wrench"></i>update</a>
-              </div>
-              <hr class="my-0">
-              <div class="card-body small bg-faded">
-                <div class="media">
-                  <img class="d-flex mr-3" src="http://placehold.it/45x45" alt="">
-                  <!--
-                  <div class="media-body">
-                    <h6 class="mt-0 mb-1"><a href="#">John Smith</a></h6>Very nice! I wish I was there! That looks amazing!
-                    <ul class="list-inline mb-0">
-                      <li class="list-inline-item">
-                        <a href="#">Like</a>
-                      </li>
-                      <li class="list-inline-item">·</li>
-                      <li class="list-inline-item">
-                        <a href="#">Reply</a>
-                      </li>
-                    </ul>
-                    <div class="media mt-3">
-                      <a class="d-flex pr-3" href="#">
-                        <img src="http://placehold.it/45x45" alt="">
-                      </a>
-                      <div class="media-body">
-                        <h6 class="mt-0 mb-1"><a href="#">David Miller</a></h6>Next time for sure!
-                        <ul class="list-inline mb-0">
-                          <li class="list-inline-item">
-                            <a href="#">Like</a>
-                          </li>
-                          <li class="list-inline-item">·</li>
-                          <li class="list-inline-item">
-                            <a href="#">Reply</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>-->
-                </div>
+                <a class="mr-3 d-inline-block" href="./Controller?action=news_delete&board_num=<%=boarddt.get(i).getBoard_num()%>">
+                	<i class="fa fa-fw fa-wrench"></i>delete</a>
+                <%} %>
               </div>
             </div>
             <%} %>

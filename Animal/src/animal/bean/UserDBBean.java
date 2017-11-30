@@ -156,7 +156,7 @@ public class UserDBBean {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
-			pstmt.executeQuery();
+			pstmt.execute();
 		}catch(SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -170,6 +170,21 @@ public class UserDBBean {
 			}
 		}
 		return true;
+	}
+	
+	public int update_user(UserDataBean user) {
+		String SQL="UPDATE user SET user_pw = ?, user_phone = ? WHERE user_id = ?";
+
+	      try {
+	         PreparedStatement pstmt=conn.prepareStatement(SQL);
+	         pstmt.setString(1, user.getUser_pw());
+	         pstmt.setString(2, user.getUser_phone());
+	         pstmt.setString(3, user.getUser_id());
+	         return pstmt.executeUpdate();
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      return -1;
 	}
 	public ArrayList<UserDataBean> getAllUser() {
 		ArrayList<UserDataBean> list = new ArrayList<UserDataBean>();

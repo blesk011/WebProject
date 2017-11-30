@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>login</title>
+  <title>비밀번호 확인</title>
   <!-- Bootstrap core CSS-->
  <link href="./Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -20,13 +20,14 @@
   <div class="container">
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">비밀번호 확인</div>
-      <form>
+      <form action="./Controller" method="get">
       <div class="card-body">
           <div class="form-group">
-           	 <input class="form-control" type="text" placeholder="Password">
+           	 <input class="form-control" name="confirm_pw" type="password" placeholder="Password">
           </div>
           </div>
-          <a class="btn btn-primary btn-block" href="#">확인</a>
+          <input type="hidden" name="action" value="${action}">
+          <input type="submit" class="btn btn-primary btn-block" value="확인">
         </form>
       </div>
     </div>

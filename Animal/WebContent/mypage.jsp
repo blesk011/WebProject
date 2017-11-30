@@ -26,13 +26,14 @@
     <br>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#">${user_id}님의 뉴스피드</a>
+          <h5>${user_id}님의 뉴스피드</h5>
         </li>
       </ol>
       <% String user_id = (String)request.getSession().getAttribute("user_id");
       	if(user_id.equals(request.getAttribute("click_id"))){%>
       	<a href="./Controller?action=news_write"><button type="button" class="btn btn-default">글쓰기</button></a>
-      	<a href="./Controller?action=confirm"><button type="button" class="btn btn-default">정보 수정</button></a>
+      	<a href="./Controller?action=confirm&goal=update_user"><button type="button" class="btn btn-default">정보 수정</button></a>
+      	<a href="./Controller?action=confirm&goal=delete_user"><button type="button" class="btn btn-default">회원 탈퇴</button></a>
       	<a href="#"><button type="button" class="btn btn-default">스크랩함</button></a>
       <%} %>
           <!-- Card Columns Example Social Feed-->

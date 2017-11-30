@@ -1,3 +1,4 @@
+
 package animal.control;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
 import animal.bean.UserDBBean;
+import animal.bean.UserDataBean;
 
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
@@ -96,6 +98,7 @@ public class Controller extends HttpServlet {
 		
 		//비밀번호 확인을 매칭시켜주는 부분
 		else if (action.equals("confirm")) {
+			request.setAttribute("action", request.getParameter("goal"));
 			address = "Confirmpassword.jsp";
 		}
 		
@@ -169,14 +172,61 @@ public class Controller extends HttpServlet {
 					address = "mypage.jsp";
 				}
 			}
+		}
+		
+		//회원정보 수정 폼으로 매칭
+		else if(action.equals("update_user")) {
+			UserDataBean userdt = user.getUser((String)request.getSession().getAttribute("user_id"));
+			if(request.getParameter("confirm_pw").equals(userdt.getUser_pw())) {
+				request.setAttribute("user_name", userdt.getUser_name());
+				request.setAttribute("user_pw", userdt.getUser_pw());
+				request.setAttribute("user_phone", userdt.getUser_phone());
+				address = "user_update.jsp";
+			}
+			
+			else {
+				request.getSession().setAttribute("messageType", "오류 메시지");
+				request.getSession().setAttribute("messageContent", "비밀번호가 틀렸습니다.");
+				address = "Confirmpassword.jsp";
+			}
+		}
+		
+		else if(action.equals("user_update_comp")) {
+			UserDataBean userdt = new UserDataBean();
+			userdt.setUser_pw(request.getParameter("user_pw"));
+			userdt.setUser_phone(request.getParameter("user_phone"));
+			userdt.setUser_id((String)request.getSession().getAttribute("user_id"));
+			String check_passwd = request.getParameter("check_passwd");
 
+			if(!userdt.getUser_pw().equals(check_passwd) || userdt.getUser_pw() == null || userdt.getUser_pw().equals("") || userdt.getUser_phone() == null || userdt.getUser_phone().equals("") || check_passwd == null || check_passwd.equals("")) {
+				request.setAttribute("user_name", userdt.getUser_name());
+				request.setAttribute("user_pw", userdt.getUser_pw());
+				request.setAttribute("user_phone", userdt.getUser_phone());
+				request.getSession().setAttribute("messageType", "오류 메시지");
+				request.getSession().setAttribute("messageContent", "다시 확인해 주세요.");
+				address = "user_update.jsp";
+			}
+			
+			else {
+				user.update_user(userdt);
+				request.setAttribute("click_id", userdt.getUser_id());
+				address = "mypage.jsp";
+			}
+		}
+		//탈퇴 버튼 누를 경우
+		else if(action.equals("delete_user")) {
+			user.deleteUser((String)request.getSession().getAttribute("user_id"));
+			session.invalidate();
+			address = "index.jsp";
 		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}
 	}
 
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

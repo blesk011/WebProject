@@ -28,7 +28,7 @@
     <br>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <h3>${user_id}님의 뉴스피드</h3>
+          <a href="#">${user_id}님의 뉴스피드</a>
         </li>
       </ol>
       <% String user_id = (String)request.getSession().getAttribute("user_id");
@@ -57,7 +57,6 @@
               <div class="card-body">
                 <h6 class="card-title mb-1"><a href="./Controller?action=mypage&click_id=<%=boarddt.get(i).getUser_id()%>"><%=boarddt.get(i).getUser_id() %></a></h6>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_content() %></p>
-                <p class="card-text small"><%=boarddt.get(i).getBoard_date().substring(0,11)%><br><%= boarddt.get(i).getBoard_date().substring(11,13) + "시 "+ boarddt.get(i).getBoard_date().substring(14,16)+"분"%></p>
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">

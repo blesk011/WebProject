@@ -129,12 +129,12 @@ public class BoardDBBean {
 	}
 	
 	//�����ǵ� �Խñ� �ҷ�����
-	public BoardDataBean news_getboard(int news_num){
-		String SQL="SELECT * FROM board WHERE news_num = ?";
+	public BoardDataBean news_getboard(int board_num){
+		String SQL="SELECT * FROM board WHERE board_num = ?";
 		BoardDataBean board = new BoardDataBean();
 		try {
 				PreparedStatement pstmt=conn.prepareStatement(SQL);
-				pstmt.setInt(1, news_num);
+				pstmt.setInt(1, board_num);
 				rs=pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -153,5 +153,37 @@ public class BoardDBBean {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public int news_update(BoardDataBean board) {
+		 String SQL="UPDATE board SET board_title = ?, board_content = ?, board_image = ?, board_path = ?, news_visible = ? WHERE board_num = ?";
+
+	      try {
+	         PreparedStatement pstmt=conn.prepareStatement(SQL);
+	         pstmt.setString(1, board.getBoard_title());
+	         pstmt.setString(2, board.getBoard_content());
+	         pstmt.setString(3, board.getBoard_image());
+	         pstmt.setString(4, board.getBoard_path());
+	         pstmt.setInt(5, board.getNews_visible());
+	         pstmt.setInt(6, board.getBoard_num());
+	         return pstmt.executeUpdate();
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      return -1;
+	}
+	
+	//뉴스피드 글 삭제
+	public int news_delete(int board_num) {
+		String SQL="DELETE FROM board WHERE board_num = ?";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_num);
+			pstmt.executeUpdate();
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

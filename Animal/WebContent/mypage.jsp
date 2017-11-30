@@ -66,7 +66,7 @@
               </a>
               <div class="card-body">
                 <h6 class="card-title mb-1"><a href="./Controller?action=mypage&click_id=<%=boarddt.get(i).getUser_id()%>"><%=boarddt.get(i).getUser_id() %></a></h6>
-                <h7 class="card-title mb-2"><%=boarddt.get(i).getBoard_title() %></h7>
+                <h7 class="card-title mb-1"><%=boarddt.get(i).getBoard_title() %></h7>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_content() %></p>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_date().substring(0,11)%><br><%= boarddt.get(i).getBoard_date().substring(11,13) + "시 "+ boarddt.get(i).getBoard_date().substring(14,16)+"분"%></p>
               </div>

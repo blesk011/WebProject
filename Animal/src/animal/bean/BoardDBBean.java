@@ -186,4 +186,18 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
+	
+	public int like_board(int board_num,int board_like) {
+		String SQL="UPDATE board SET board_like = ? WHERE board_num = ?";
+
+	      try {
+	         PreparedStatement pstmt=conn.prepareStatement(SQL);
+	         pstmt.setInt(1, board_like);
+	         pstmt.setInt(2, board_num);
+	         return pstmt.executeUpdate();
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      return -1;
+	}
 }

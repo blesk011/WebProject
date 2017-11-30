@@ -10,15 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import animal.bean.CateDBBean;
+import animal.bean.CateDataBean;
 import animal.bean.UserDBBean;
-import animal.bean.UserDataBean;
 
 /**
- * Servlet implementation class MngrUserStartAction
+ * Servlet implementation class MngrMenuAction
  */
-@WebServlet("/MngrUserStartAction")
-public class MngrUserStartAction extends HttpServlet {
+@WebServlet("/MngrCategoryAction")
+public class MngrCategoryAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -33,15 +35,23 @@ public class MngrUserStartAction extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		String user_id = request.getParameter("user_id");
-		UserDBBean.getinstance().startUser(user_id);
+		String action = request.getParameter("action");
 		
-		ArrayList<UserDataBean> bannedUserList = null; //정지 해제 후 보여줄 리스트
-		bannedUserList = UserDBBean.getinstance().getBannedUser();
-		request.setAttribute("bannedUserList", bannedUserList);
-		request.setAttribute("count", new Integer(bannedUserList.size()));
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/member/stopMemberManage.jsp");
+		if(action != null) {
+			if(action.equals("newCategory")) {
+				//
+			}
+			else if(action.equals("deleteCategory")){
+				CateDBBean.getinstance().deleteCategory(Integer.parseInt(request.getParameter("cate_num")));
+			}
+		}
+
+		ArrayList<CateDataBean> cateList = null;
+		cateList = CateDBBean.getinstance().getList();
+		request.setAttribute("categoryList", cateList);
+		request.setAttribute("count", new Integer(cateList.size()));
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/category/categoryManage.jsp");
 		dispatcher.forward(request, response);
 	}
 }

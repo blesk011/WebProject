@@ -11,21 +11,18 @@ var status = true;
 
 $(document).ready(function(){
 	$("#member").click(function(){//[회원]버튼 클릭
-		window.location.href="/Animal/MngrUserListAction";
+		window.location.href="/Animal/MngrUserAction";
 	});
 	$("#mBanned").click(function(){//[강제탈퇴맴버]버튼 클릭
-		window.location.href="/Animal/MngrBannedUserListAction";
+		window.location.href="/Animal/MngrBanAction";
 	});
 	$("#staff").click(function(){//[스탭]버튼 클릭
-		window.location.href("/Animal/MngrStaffListAction");
+		window.location.href="/Animal/MngrStaffAction";
 	});
-	$("#menu").click(function(){//[메뉴]버튼 클릭
-		window.location.href='/Animal/menu/boardList.jsp';
+	$("#category").click(function(){//[카테고리]버튼 클릭
+		window.location.href="/Animal/MngrCategoryAction";
 	});
 	$("#spam").click(function(){//[신고글]버튼 클릭
-		window.location.href("/Animal/mg/spamList.do");
-	});
-	$("#deleted").click(function(){//[삭제글,댓글]버튼 클릭
-		window.location.href("/Animal/qnaList.do");
+		window.location.href="/Animal/MngrDeclarAction";
 	});
 });

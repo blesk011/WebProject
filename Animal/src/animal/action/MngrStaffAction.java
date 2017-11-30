@@ -14,11 +14,12 @@ import animal.bean.UserDBBean;
 import animal.bean.UserDataBean;
 
 /**
- * Servlet implementation class MngrBannedUserListAction
+ * Servlet implementation class MngrStaffListAction
  */
-@WebServlet("/MngrBannedUserListAction")
-public class MngrBannedUserListAction extends HttpServlet {
+@WebServlet("/MngrStaffAction")
+public class MngrStaffAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -33,12 +34,19 @@ public class MngrBannedUserListAction extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		ArrayList<UserDataBean> bannedUserList = null;
-		bannedUserList = UserDBBean.getinstance().getBannedUser();
-		request.setAttribute("bannedUserList", bannedUserList);
-		request.setAttribute("count", new Integer(bannedUserList.size()));
+		String action = request.getParameter("action");
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/mngr/member/stopMemberManage.jsp");
+		if(action != null) {
+			if(action.equals("dismissStaff")) {
+				UserDBBean.getinstance().startUser(request.getParameter("user_id"));
+			}
+		}
+		ArrayList<UserDataBean> staffList = null; 
+		staffList = UserDBBean.getinstance().getAllStaff();
+		request.setAttribute("staffList", staffList);
+		request.setAttribute("count", new Integer(staffList.size()));
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/staff/staffManage.jsp");
 		dispatcher.forward(request, response);
 	}
 }

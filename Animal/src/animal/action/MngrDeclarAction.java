@@ -10,15 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import animal.bean.BoardDBBean;
 import animal.bean.UserDBBean;
 import animal.bean.UserDataBean;
 
 /**
- * Servlet implementation class MngrUserBanAction
+ * Servlet implementation class MngrDeclarListAction
  */
-@WebServlet("/MngrUserBanAction")
-public class MngrUserBanAction extends HttpServlet {
+@WebServlet("/MngrDeclarAction")
+public class MngrDeclarAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -32,16 +34,26 @@ public class MngrUserBanAction extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
-		
-		String user_id = request.getParameter("user_id");
-		UserDBBean.getinstance().banUser(user_id);
-		
-		ArrayList<UserDataBean> userList = null; //삭제 후 보여줄 리스트
-		userList = UserDBBean.getinstance().getAllUser();
-		request.setAttribute("userList", userList);
-		request.setAttribute("count", new Integer(userList.size()));
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/member/fullMemberManage.jsp");
+
+		String action = request.getParameter("action");
+
+		if(action != null) {
+			if(action.equals("boardDelete")){
+				BoardDBBean.getinstance().news_delete(Integer.parseInt(request.getParameter("board_num")));
+			}
+			else if(action.equals("banUser")) {
+				String user_id = request.getParameter("user_id");
+				UserDBBean.getinstance().banUser(user_id);
+			}
+		}
+
+		ArrayList<UserDataBean> declarList = null; 
+		declarList = UserDBBean.getinstance().getAllStaff();
+		//수정해야함
+		request.setAttribute("declarList", declarList);
+		request.setAttribute("count", new Integer(declarList.size()));
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/declar/declarManage.jsp");
 		dispatcher.forward(request, response);
 	}
 }

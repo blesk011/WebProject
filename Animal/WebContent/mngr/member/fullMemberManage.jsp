@@ -11,7 +11,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 <jsp:include page="/mngr/managerMain.jsp" />
-<div id="userList">
+<div id="fullUserList">
 		<ul>
 			<li>가입한 회원수 : ${count}</li>
 		</ul>
@@ -45,8 +45,8 @@
 					</c:choose>
 					<c:choose>
 						<c:when test="${user.user_available != '2'}">
-							<td><a href="/Animal/MngrUserBanAction?user_id=${user.getUser_id()}">활동 정지</a></td>
-							<td><a href="/Animal/MngrAppointStaffAction?user_id=${user.getUser_id()}">스탭 임명</a></td>
+							<td><a href="/Animal/MngrUserAction?action=banUser&user_id=${user.getUser_id()}">활동 정지</a></td>
+							<td><a href="/Animal/MngrUserAction?action=appointStaff&user_id=${user.getUser_id()}">스탭 임명</a></td>
 						</c:when>
 					</c:choose>
 				</tr>

@@ -21,7 +21,7 @@
 <body class="fixed-nav sticky-footer bg-dark">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.jsp"><h1>Animal<img src="/Animal/images/foot.png" width="50" height="30"></h1></a>
+    <a class="navbar-brand" href="/Animal/index.jsp"><h1>Animal<img src="/Animal/images/foot.png" width="50" height="30"></h1></a>
     <div class="collapse navbar-collapse" id="navbarResponsive">
   	  <ul class="navbar-nav navbar-sidenav"><br>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
@@ -67,16 +67,20 @@
           </form>
         </li>
         <c:if test="${user_id ne null }">
-          <a class="nav-link" href="./Controller?action=mypage&click_id=${user_id}">
+          <c:if test="${user_available >= '2'}">
+            <a class="nav-link" href="/Animal/mngr/mngrForm.jsp">
+            	<h5><span class="nav-link-text">Manage</span></h5></a>
+          </c:if>
+          <a class="nav-link" href="/Animal/Controller?action=mypage&click_id=${user_id}">
             <h5><span class="nav-link-text">My Page</span></h5></a>
          </c:if>
         <li class="nav-item">
           <c:if test="${user_id eq null}">
-          	<a class="nav-link" href="./Controller?action=login">
+          	<a class="nav-link" href="/Animal/Controller?action=login">
             <h5><i class="fa fa-fw fa-sign-in"></i>Login</h5></a>
           </c:if>
           <c:if test="${user_id ne null }">
-          	<a class="nav-link" href="./Controller?action=logout&user_id=${user_id}">
+          	<a class="nav-link" href="/Animal/Controller?action=logout&user_id=${user_id}">
           	<h5><i class="fa fa-fw fa-sign-out"></i>Logout</h5></a>
           </c:if>
         </li>

@@ -28,7 +28,7 @@
 					<td>${user.user_id}</td>
 					<td>${user.user_name}</td>
 					<td>${user.user_date}</td>
-					<td><a href="/Animal/MngrUserStartAction?user_id=${user.user_id}">정지 해제</a></td>
+					<td><a href="/Animal/MngrBanAction?action=userStart&user_id=${user.user_id}">정지 해제</a></td>
 				</tr>
 			</c:forEach>
 		</table>

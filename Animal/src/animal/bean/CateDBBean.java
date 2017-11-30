@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CateDBBean {
@@ -112,5 +113,25 @@ public class CateDBBean {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public boolean deleteCategory(int cate_num) {
+		String sql = "delete from cate where cate_num=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cate_num);
+			pstmt.executeQuery();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
 	}
 }

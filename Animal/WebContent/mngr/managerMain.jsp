@@ -25,14 +25,13 @@
 		</ul>
 		
 		<ul>
-			<li>메뉴 관리
-			<li><button id="menu">메뉴 관리</button>
+			<li>카테고리 관리
+			<li><button id="category">카테고리 관리</button>
 		</ul>
 		
 		<ul>
 			<li>신고 관리
-			<li><button id="spam">신고처리 게시글</button> <!--  신고처리된 글을 볼수있고, 삭제할것인지  판단할수 있는 테이블 생성  -->
-			<li><button id="deleted">삭제된 글/댓글 </button> <!-- 삭제된글의 리스트 출력 -->
+			<li><button id="spam">게시글 신고 관리</button> <!--  신고처리된 글을 볼수있고, 삭제할것인지  판단할수 있는 테이블 생성  -->
 		</ul>
 
 	</div>

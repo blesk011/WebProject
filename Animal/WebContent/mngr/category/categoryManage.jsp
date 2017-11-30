@@ -10,10 +10,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>카테고리 관리</title>
   <!-- Bootstrap core CSS-->
-  <link href="/Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="/Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-  <link href="/Resources/css/sb-admin.css" rel="stylesheet">
+  <link href="/Animal/Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Animal/Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="/Animal/Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="/Animal/Resources/css/sb-admin.css" rel="stylesheet">
   <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -21,16 +21,16 @@
   <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 </head>
 
-
-<jsp:include page="/mngr/managerMain.jsp" />
-<div id="categoryManage">
+<jsp:include page="/mngr/mngrForm.jsp" />
+<div id="categoryManage" class="content-wrapper">
+	<div class="container-fluid"><br>
 		<ul>
 			<li>카테고리 수 : ${count}</li>
 		</ul>
 		 <form method="post" action="/Animal/MngrCategoryAction">
 		 	<input type="text" id="cate_name" name="cate_name" placeholder="카테고리명">
 		 	<input type="hidden" name="action" value="newCategory">
-		 	<input type="submit" class="btn btn-primary btn-block" value="카테고리 생성">
+		 	<input type="submit" class="btn btn-default" value="카테고리 생성">
 		 </form>
 		<table class='table table-striped' style='border: 1px solid #dddddd' height='100'>
 			<tr>
@@ -46,5 +46,5 @@
 				</tr>
 			</c:forEach>
 		</table>
+	</div>
 </div>
-<center><button onclick="location.href='mngr/managerMain.jsp'" class = "btn btn-default" align="center">돌아가기</button></center>

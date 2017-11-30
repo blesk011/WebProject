@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="animal.bean.*" %>
+<%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -21,20 +23,18 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.jsp"><h1>Animal<img src="images/foot.png" width="50" height="30"></h1></a>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav"><br>
-      	<!-- 은진아 여기 반복문 돌려서 카테고리 추가하면 될듯! -->
+  	  <ul class="navbar-nav navbar-sidenav"><br>
+    	<%
+			ArrayList<CateDataBean> cateList = CateDBBean.getinstance().getList();
+    		for(CateDataBean cate : cateList) {
+		%>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="index.html">
-            <span class="nav-link-text"><h3>고양이 자랑</h3></span>
+            <span class="nav-link-text"><h3><%=cate.getCate_name()%></h3></span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
-            <span class="nav-link-text"><h3>강아지 자랑</h3></span>
-          </a>
-        </li>
-        	<!-- 은진아 여기 반복문 돌려서 카테고리 추가하면 될듯! -->
-          </ul>
+        <%} %>
+      </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">
           <a class="nav-link text-center" id="sidenavToggler">

@@ -1,6 +1,11 @@
 package animal.bean;
 
-import java.sql.*;;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;;
 
 public class UserDBBean {
 	private Connection conn = null;
@@ -89,7 +94,7 @@ public class UserDBBean {
 		
 	//ȸ������
 	public int register(UserDataBean member) {
-		String SQL="INSERT INTO USER VALUES (?, ?, ?, ?, ?)";
+		String SQL="INSERT INTO USER VALUES (?, ?, ?, ?, ?, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(SQL);
@@ -98,6 +103,7 @@ public class UserDBBean {
 			pstmt.setString(3, member.getUser_pw());
 			pstmt.setString(4, member.getUser_phone());
 			pstmt.setString(5, getDate());
+			pstmt.setInt(6, member.getUser_available());
 			//int result = new likeDAO().create(member.getUser_id());
 				return pstmt.executeUpdate();
 			}catch(Exception e) {
@@ -128,6 +134,7 @@ public class UserDBBean {
 				user.setUser_pw(rs.getString("user_pw"));
 				user.setUser_phone(rs.getString("user_phone"));
 				user.setUser_date(rs.getString("user_date"));
+				user.setUser_available(rs.getInt("user_available"));
 			}
 				
 			}catch(SQLException e) {
@@ -163,5 +170,34 @@ public class UserDBBean {
 			}
 		}
 		return true;
+	}
+	public ArrayList<UserDataBean> getAllUser() {
+		ArrayList<UserDataBean> list = new ArrayList<UserDataBean>();
+		try {
+			String sql = "select * from user";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				UserDataBean user = new UserDataBean();
+				user.setUser_name(rs.getString("user_name"));
+				user.setUser_id(rs.getString("user_id"));
+				user.setUser_pw(rs.getString("user_pw"));
+				user.setUser_phone(rs.getString("user_phone"));
+				user.setUser_date(rs.getString("user_date"));
+				user.setUser_available(rs.getInt("user_available"));
+				list.add(user);
+			}
+		} catch (Exception e) {
+			System.out.println("getAllUser err : " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e2) {
+			}
+		}
+		return list;
 	}
 }

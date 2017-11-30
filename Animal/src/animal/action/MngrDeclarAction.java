@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import animal.bean.BoardDBBean;
+import animal.bean.DeclarationDBBean;
+import animal.bean.DeclarationDataBean;
 import animal.bean.UserDBBean;
-import animal.bean.UserDataBean;
 
 /**
  * Servlet implementation class MngrDeclarListAction
@@ -47,9 +48,9 @@ public class MngrDeclarAction extends HttpServlet {
 			}
 		}
 
-		ArrayList<UserDataBean> declarList = null; 
-		declarList = UserDBBean.getinstance().getAllStaff();
-		//수정해야함
+		ArrayList<DeclarationDataBean> declarList = null; 
+		declarList = DeclarationDBBean.getinstance().declaration_getList();
+		
 		request.setAttribute("declarList", declarList);
 		request.setAttribute("count", new Integer(declarList.size()));
 

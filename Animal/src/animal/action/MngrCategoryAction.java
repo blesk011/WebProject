@@ -39,7 +39,7 @@ public class MngrCategoryAction extends HttpServlet {
 		
 		if(action != null) {
 			if(action.equals("newCategory")) {
-				//
+				CateDBBean.getinstance().add_cate(request.getParameter("cate_name"));
 			}
 			else if(action.equals("deleteCategory")){
 				CateDBBean.getinstance().deleteCategory(Integer.parseInt(request.getParameter("cate_num")));

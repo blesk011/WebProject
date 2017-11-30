@@ -28,7 +28,7 @@
 					<td>${declar.user_id}</td>
 					<td>${declar.declaration_content}</td>
 					<td><a href="/Animal/MngrDeclarAction?action=boardDelete&board_num=${declar.board_num}">게시글 삭제</a></td>
-					<td><a href="/Animal/MngrDeclarAction?action=banUser&user_id=${declar.user_id()}">사용자 활동 정지</a></td>
+					<td><a href="/Animal/MngrDeclarAction?action=banUser&user_id=${declar.user_id}">사용자 활동 정지</a></td>
 				</tr>
 			</c:forEach>
 		</table>

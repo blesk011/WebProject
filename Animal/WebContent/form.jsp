@@ -44,7 +44,7 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2">
+          <form class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="/Animal/Controller?action=searchAction">
             <div class="input-group">
               <input class="form-control" type="text" placeholder=Search id="searchKeyword" name="searchKeyword">
               <span class="input-group-btn">

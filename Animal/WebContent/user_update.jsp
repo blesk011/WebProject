@@ -47,11 +47,11 @@
             <div class="form-row">
               <div class="col-md-6">
                 <label>비밀번호</label>
-                <input class="form-control" id="user_pw" name="user_pw" type="password" onkeyup="passwordCheckFunction();" placeholder="Password" value="${user_pw}">
+                <input class="form-control" id="user_pw" name="user_pw" type="password" onkeyup="passwordCheckFunction();" placeholder="Password">
               </div>
               <div class="col-md-6">
                 <label>비밀번호 확인</label>
-                <input class="form-control" id="check_passwd" name="check_passwd" type="password" onkeyup="passwordCheckFunction();" placeholder="Confirm password" value="${user_pw}">
+                <input class="form-control" id="check_passwd" name="check_passwd" type="password" onkeyup="passwordCheckFunction();" placeholder="Confirm password">
               </div>
             </div>
           </div>

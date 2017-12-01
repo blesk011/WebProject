@@ -32,7 +32,7 @@ public class LikeDBBean {
 	
 	//like_num을 구해주는 메소드
 	public int getNext() {
-		String SQL="SELECT like_num FROM like ORDER BY like_num DESC";
+		String SQL="SELECT like_num FROM user_like ORDER BY like_num DESC";
 		try {
 			pstmt=conn.prepareStatement(SQL);
 			rs=pstmt.executeQuery();
@@ -76,20 +76,20 @@ public class LikeDBBean {
 	}
 	
 	//이미 좋아요 한 사람인지 check 하나의 게시글을 여러번 좋아요 할 수 없음
-	public int check_id(String user_id, int board_num) {
+	public int check_id(LikeDataBean like) {
 		String SQL="SELECT * FROM user_like WHERE user_id = ? AND board_num = ?";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
-			pstmt.setString(1, user_id);
-			pstmt.setInt(2, board_num);
+			pstmt.setString(1, like.getUser_id());
+			pstmt.setInt(2, like.getBoard_num());
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return 1;
+				return -1;
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-			return -1;	
+			return 1;	
 	}
 	
 }

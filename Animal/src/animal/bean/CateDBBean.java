@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CateDBBean {
@@ -58,7 +59,7 @@ public class CateDBBean {
 	}
 
 	//대 카테고리 추가하는부분 ->한솔오빠가 쓰는부분
-	public int add_out_cate(String cate_name) {
+	public int add_cate(String cate_name) {
 		String SQL="INSERT INTO cate VALUES (?, ?, ?)";
 		try {
 			//여기에 추가해야함
@@ -112,5 +113,25 @@ public class CateDBBean {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public boolean deleteCategory(int cate_num) {
+		String sql = "delete from cate where cate_num=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cate_num);
+			pstmt.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
 	}
 }

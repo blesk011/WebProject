@@ -14,32 +14,36 @@ import animal.bean.UserDBBean;
 import animal.bean.UserDataBean;
 
 /**
- * Servlet implementation class MngrStaffListAction
+ * Servlet implementation class MngrUserListAction
  */
-@WebServlet("/MngrStaffListAction")
-public class MngrStaffListAction extends HttpServlet {
+@WebServlet("/MngrUserAction")
+public class MngrUserAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		ArrayList<UserDataBean> staffList = null; 
-		staffList = UserDBBean.getinstance().getAllStaff();
-		request.setAttribute("staffList", staffList);
-		request.setAttribute("count", new Integer(staffList.size()));
+		String action = request.getParameter("action");
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/staff/staffList.jsp");
+		if(action != null) {
+			if(action.equals("banUser")) {
+				UserDBBean.getinstance().banUser(request.getParameter("user_id"));
+			}
+			else if(action.equals("appointStaff")){
+				UserDBBean.getinstance().appointStaff(request.getParameter("user_id"));
+			}
+		}
+
+		ArrayList<UserDataBean> userList = null;
+		userList = UserDBBean.getinstance().getAllUser();
+		request.setAttribute("userList", userList);
+		request.setAttribute("count", new Integer(userList.size()));
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("mngr/member/fullMemberManage.jsp");
 		dispatcher.forward(request, response);
 	}
 }

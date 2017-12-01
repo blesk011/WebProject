@@ -4,19 +4,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BoardDBBean {
 	private Connection conn = null;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	
+
 	private static BoardDBBean instance = new BoardDBBean();
-	
+
 	public static BoardDBBean getinstance() {
 		return instance;
 	}
-	
+
 	private BoardDBBean() {
 		try {
 			String dbURL = "jdbc:mysql://203.249.22.34:3306/web?autoReconnect=true&useSSL=false";
@@ -28,8 +29,8 @@ public class BoardDBBean {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	//�ۼ��� �� ��ȣ ���ϱ�
 	public int getNext_board() {
 		String SQL="SELECT board_num FROM board ORDER BY board_num DESC";
@@ -45,7 +46,7 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-	
+
 	//�ۼ��� �� ��ȣ ���ϱ�
 	public int getNext_news() {
 		String SQL="SELECT news_num FROM board ORDER BY board_num DESC";
@@ -61,7 +62,7 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-		
+
 	//���� �ð��� ���ϴ� �޼ҵ�
 	public String getDate() {
 		String SQL="SELECT NOW()";
@@ -75,7 +76,7 @@ public class BoardDBBean {
 		}
 		return "";
 	}
-	
+
 	//�����ǵ� �Խñ� ���
 	public int news_write(BoardDataBean board) {
 		String SQL = "INSERT INTO board (board_num,news_num,user_id,board_title,board_content,board_image,board_path,news_visible,board_date) "
@@ -97,28 +98,31 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-	
+
 	//�����ǵ� �Խñ� ����
 	public ArrayList<BoardDataBean> news_getlist(String user_id){
 		String SQL="SELECT * FROM board WHERE news_num > 0 AND user_id = ?";
 		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
 		try {
-				PreparedStatement pstmt=conn.prepareStatement(SQL);
-				pstmt.setString(1, user_id);
-				rs=pstmt.executeQuery();
-			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setString(1, user_id);
+			rs=pstmt.executeQuery();
+
 			while(rs.next()) {
 				BoardDataBean board = new BoardDataBean();
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
 				board.setBoard_content(rs.getString("board_content"));
 				board.setBoard_image(rs.getString("board_image"));
 				board.setBoard_path(rs.getString("board_path"));
-				board.setNews_visible(rs.getInt("news_visible"));
 				board.setBoard_date(rs.getString("board_date"));
 				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrab"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
 				list.add(board);
 			}
 			return list;
@@ -127,26 +131,30 @@ public class BoardDBBean {
 		}
 		return null;
 	}
-	
+
 	//�����ǵ� �Խñ� �ҷ�����
 	public BoardDataBean news_getboard(int board_num){
 		String SQL="SELECT * FROM board WHERE board_num = ?";
 		BoardDataBean board = new BoardDataBean();
 		try {
-				PreparedStatement pstmt=conn.prepareStatement(SQL);
-				pstmt.setInt(1, board_num);
-				rs=pstmt.executeQuery();
-			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_num);
+			rs=pstmt.executeQuery();
+
 			while(rs.next()) {
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
 				board.setBoard_content(rs.getString("board_content"));
 				board.setBoard_image(rs.getString("board_image"));
 				board.setBoard_path(rs.getString("board_path"));
-				board.setNews_visible(rs.getInt("news_visible"));
 				board.setBoard_date(rs.getString("board_date"));
+				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrab"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
 			}
 			return board;
 		}catch(Exception e) {
@@ -154,25 +162,25 @@ public class BoardDBBean {
 		}
 		return null;
 	}
-	
-	public int news_update(BoardDataBean board) {
-		 String SQL="UPDATE board SET board_title = ?, board_content = ?, board_image = ?, board_path = ?, news_visible = ? WHERE board_num = ?";
 
-	      try {
-	         PreparedStatement pstmt=conn.prepareStatement(SQL);
-	         pstmt.setString(1, board.getBoard_title());
-	         pstmt.setString(2, board.getBoard_content());
-	         pstmt.setString(3, board.getBoard_image());
-	         pstmt.setString(4, board.getBoard_path());
-	         pstmt.setInt(5, board.getNews_visible());
-	         pstmt.setInt(6, board.getBoard_num());
-	         return pstmt.executeUpdate();
-	      }catch(Exception e) {
-	         e.printStackTrace();
-	      }
-	      return -1;
+	public int news_update(BoardDataBean board) {
+		String SQL="UPDATE board SET board_title = ?, board_content = ?, board_image = ?, board_path = ?, news_visible = ? WHERE board_num = ?";
+
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setString(1, board.getBoard_title());
+			pstmt.setString(2, board.getBoard_content());
+			pstmt.setString(3, board.getBoard_image());
+			pstmt.setString(4, board.getBoard_path());
+			pstmt.setInt(5, board.getNews_visible());
+			pstmt.setInt(6, board.getBoard_num());
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
-	
+
 	//뉴스피드 글 삭제
 	public int news_delete(int board_num) {
 		String SQL="DELETE FROM board WHERE board_num = ?";
@@ -186,18 +194,93 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-	
+
 	public int like_board(int board_num,int board_like) {
 		String SQL="UPDATE board SET board_like = ? WHERE board_num = ?";
 
-	      try {
-	         PreparedStatement pstmt=conn.prepareStatement(SQL);
-	         pstmt.setInt(1, board_like);
-	         pstmt.setInt(2, board_num);
-	         return pstmt.executeUpdate();
-	      }catch(Exception e) {
-	         e.printStackTrace();
-	      }
-	      return -1;
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_like);
+			pstmt.setInt(2, board_num);
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	public ArrayList<BoardDataBean> getList() {
+		ArrayList<BoardDataBean> list = new ArrayList<>();
+		try {
+			String sql = "select * from board";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardDataBean board = new BoardDataBean();
+				board.setBoard_num(rs.getInt("board_num"));
+				board.setNews_num(rs.getInt("news_num"));
+				board.setCate_num(rs.getInt("cate_num"));
+				board.setUser_id(rs.getString("user_id"));
+				board.setBoard_title(rs.getString("board_title"));
+				board.setBoard_content(rs.getString("board_content"));
+				board.setBoard_image(rs.getString("board_image"));
+				board.setBoard_path(rs.getString("board_path"));
+				board.setBoard_date(rs.getString("board_date"));
+				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrap"));
+				board.setBoard_declaration(rs.getInt("board_declaration"));
+				board.setNews_visible(rs.getInt("news_visible"));
+				list.add(board);
+			}
+		} catch (Exception e) {
+			System.out.println("getAllUser err : " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e2) {
+			}
+		}
+		return list;
+	}
+	/**
+	 * 
+	 * @param searchName
+	 * @return 결과 list 반환
+	 * @throws SQLException
+	 * 이름으로 물품을 검색하는 메소드
+	 */
+	public ArrayList<BoardDataBean> searchByName(String searchName) throws SQLException{
+		//conn = getConnection();  //connection 연결
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		ArrayList<BoardDataBean> searchNameProductList = new ArrayList<>();  //반환할 결과 리스트
+		if(searchName.equals(""))
+			return searchNameProductList;
+		pstmt = conn.prepareStatement("select * from board where board_title like ?");  //해당 이름을 포함하는 물품 검색
+		pstmt.setString(1, "%" + searchName + "%");
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			//각 dto 변수 저장
+			BoardDataBean board = new BoardDataBean();
+			board.setBoard_num(rs.getInt("board_num"));
+			board.setNews_num(rs.getInt("news_num"));
+			board.setCate_num(rs.getInt("cate_num"));
+			board.setUser_id(rs.getString("user_id"));
+			board.setBoard_title(rs.getString("board_title"));
+			board.setBoard_content(rs.getString("board_content"));
+			board.setBoard_image(rs.getString("board_image"));
+			board.setBoard_path(rs.getString("board_path"));
+			board.setBoard_date(rs.getString("board_date"));
+			board.setBoard_like(rs.getInt("board_like"));
+			board.setBoard_scrap(rs.getInt("board_scrap"));
+			board.setBoard_declaration(rs.getInt("board_declaration"));
+			board.setNews_visible(rs.getInt("news_visible"));
+			searchNameProductList.add(board);  //리스트에 추가
+		}
+		//DbUtil.close(conn, pstmt, rs);  //연결 해지
+		return searchNameProductList;
 	}
 }

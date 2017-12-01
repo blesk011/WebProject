@@ -26,13 +26,14 @@
     <br>
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <h3>${click_id}님의 뉴스피드</h3>
+          <h5>${user_id}님의 뉴스피드</h5>
         </li>
       </ol>
       <% String user_id = (String)request.getSession().getAttribute("user_id");
       	if(user_id.equals(request.getAttribute("click_id"))){%>
       	<a href="./Controller?action=news_write"><button type="button" class="btn btn-default">글쓰기</button></a>
-      	<a href="./Controller?action=confirm"><button type="button" class="btn btn-default">정보 수정</button></a>
+      	<a href="./Controller?action=confirm&goal=update_user"><button type="button" class="btn btn-default">정보 수정</button></a>
+      	<a href="./Controller?action=confirm&goal=delete_user"><button type="button" class="btn btn-default">회원 탈퇴</button></a>
       	<a href="#"><button type="button" class="btn btn-default">스크랩함</button></a>
       <%} %>
           <!-- Card Columns Example Social Feed-->
@@ -43,7 +44,7 @@
             <!-- Example Social Card-->
             <% 
                BoardDBBean board = BoardDBBean.getinstance();
-               ArrayList<BoardDataBean> preboarddt =board.news_getlist(request.getParameter("click_id"));
+               ArrayList<BoardDataBean> preboarddt =board.news_getlist((String)request.getAttribute("click_id"));
                ArrayList<BoardDataBean> boarddt = new ArrayList<BoardDataBean>();
          
                if(user_id.equals(request.getAttribute("click_id"))){
@@ -66,14 +67,15 @@
               </a>
               <div class="card-body">
                 <h6 class="card-title mb-1"><a href="./Controller?action=mypage&click_id=<%=boarddt.get(i).getUser_id()%>"><%=boarddt.get(i).getUser_id() %></a></h6>
-                <h7 class="card-title mb-2"><%=boarddt.get(i).getBoard_title() %></h7>
+                <h7 class="card-title mb-1"><%=boarddt.get(i).getBoard_title() %></h7>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_content() %></p>
-                <p class="card-text small"><%=boarddt.get(i).getBoard_date().substring(0,11)%><br><%= boarddt.get(i).getBoard_date().substring(11,13) + "시 "+ boarddt.get(i).getBoard_date().substring(14,16)+"분"%></p>
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                   <i class="fa fa-fw fa-thumbs-up"></i>Like</a>
+                <a class="mr-3 d-inline-block" href="./Controller?action=declaration&board_num=<%=boarddt.get(i).getBoard_num()%>&news_num=<%=boarddt.get(i).getNews_num()%>">
+                  <i class="fa fa-fw fa-thumbs-up"></i>declaration</a>
                 <% if(user_id.equals(request.getAttribute("click_id"))){ %>
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                 	<i class="fa fa-fw fa-wrench"></i>update</a>

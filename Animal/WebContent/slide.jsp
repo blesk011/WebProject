@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link href="css/slide.css" rel="stylesheet">
+
 	<div align="center">
 	 <div id="myCarousel" class="carousel slide" data-ride="carousel">
 	 	<ol class="carousel-indicators">

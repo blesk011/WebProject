@@ -32,6 +32,7 @@ public class RegisterAction extends HttpServlet {
 		user.setUser_phone(request.getParameter("user_phone"));
 		user.setUser_id(request.getParameter("user_id"));
 		user.setUser_pw(request.getParameter("user_pw"));
+		user.setUser_available(1);
 		String check_passwd=request.getParameter("check_passwd");
 		
 		

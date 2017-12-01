@@ -20,7 +20,7 @@
     <div class="card card-login mx-auto mt-5">
       <div class="card-header">Login</div>
       <div class="card-body">
-        <form method="post" action="./Controller">
+        <form method="post" action="./LoginAction">
           <div class="form-group">
             <label>ID</label>
             <input class="form-control" id="user_id" name="user_id" type="text" placeholder="ID">
@@ -29,7 +29,7 @@
             <label>Password</label>
             <input class="form-control" id="user_pw" name="user_pw" type="password" placeholder="Password">
           </div>
-          <input type="hidden" name="action" value="login_comp">
+          <!--<input type="hidden" name="action" value="login_comp">-->
           <input type="submit" class="btn btn-primary btn-block" value="Login">
         </form>
         <div class="text-center">

@@ -14,6 +14,9 @@
   <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <link href="./Resources/css/sb-admin.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <link href="css/bootstrap.css" rel="stylesheet">
 </head>
 <body class="bg-dark">
   <div class="container">
@@ -46,7 +49,6 @@
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <jsp:include page="alert.jsp"/>
-  
 </body>
 
 </html>

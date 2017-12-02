@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="animal.bean.*" %>
@@ -47,11 +48,11 @@
             <div class="form-row">
               <div class="col-md-6">
                 <label>비밀번호</label>
-                <input class="form-control" id="user_pw" name="user_pw" type="password" onkeyup="passwordCheckFunction();" placeholder="Password" value="${user_pw}">
+                <input class="form-control" id="user_pw" name="user_pw" type="password" onkeyup="passwordCheckFunction();" placeholder="Password">
               </div>
               <div class="col-md-6">
                 <label>비밀번호 확인</label>
-                <input class="form-control" id="check_passwd" name="check_passwd" type="password" onkeyup="passwordCheckFunction();" placeholder="Confirm password" value="${user_pw}">
+                <input class="form-control" id="check_passwd" name="check_passwd" type="password" onkeyup="passwordCheckFunction();" placeholder="Confirm password">
               </div>
             </div>
           </div>
@@ -75,6 +76,5 @@
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <jsp:include page="alert.jsp"/>
-</body>
-
+  </body>
 </html>

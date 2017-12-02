@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>login</title>
+  <title>register</title>
   <!-- Bootstrap core CSS-->
   <link href="./Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -54,7 +54,7 @@
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">회원가입</div>
       <div class="card-body">
-        <form method="post" action="./RegisterAction">
+        <form method="get" action="./Controller">
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
@@ -92,8 +92,9 @@
           </div>
           <div class="form-group">
             <label>핸드폰 번호</label>
-            <input class="form-control" type="text" id="user_phone" name="user_phone" placeholder="Phone">
+            <input class="form-control" type="text" id="user_phone" name="user_phone" placeholder="010-xxxx-xxxx">
           </div>
+          <input type="hidden" name="action" value="register_comp">
           <input type="submit" class="btn btn-primary btn-block" value="회원가입">
         </form>
         <div class="text-center">

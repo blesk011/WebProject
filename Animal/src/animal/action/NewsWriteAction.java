@@ -90,7 +90,9 @@ public class NewsWriteAction extends HttpServlet {
 			}
 			
 			else {
-				response.sendRedirect("index.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("mypage.jsp");
+				request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+				dispatcher.forward(request,response);
 			}
 		}
 

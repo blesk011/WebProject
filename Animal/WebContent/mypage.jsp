@@ -72,13 +72,14 @@
                 <h6 class="card-title mb-1"><a href="./Controller?action=mypage&click_id=<%=boarddt.get(i).getUser_id()%>"><%=boarddt.get(i).getUser_id() %></a></h6>
                 <h7 class="card-title mb-1"><%=boarddt.get(i).getBoard_title() %></h7>
                 <p class="card-text small"><%=boarddt.get(i).getBoard_content() %></p>
+                <p class="card-text small"><%=boarddt.get(i).getBoard_date().substring(0, 11) + boarddt.get(i).getBoard_date().substring(11, 13)+ "시" + boarddt.get(i).getBoard_date().substring(14, 16) + "분" %>
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">
                 <a class="mr-3 d-inline-block" href="./Controller?action=like&board_num=<%=boarddt.get(i).getBoard_num()%>&from=mypage">
                   <i class="fa fa-fw fa-thumbs-up"></i><%=boarddt.get(i).getBoard_like() %></a>
                 <a class="mr-3 d-inline-block" href="./Controller?action=declaration&board_num=<%=boarddt.get(i).getBoard_num()%>&news_num=<%=boarddt.get(i).getNews_num()%>">
-                  <i class="fa fa-fw fa-thumbs-up"></i>declaration</a>
+                  <i class="fa fa-fw fa-thumbs-down"></i>declaration</a>
                 <% if(user_id.equals(request.getAttribute("click_id"))){ %>
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                 	<i class="fa fa-fw fa-wrench"></i>update</a>

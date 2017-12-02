@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import animal.bean.BoardDBBean;
 import animal.bean.BoardDataBean;
@@ -24,13 +23,15 @@ import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
 import animal.bean.LikeDataBean;
+import animal.bean.ScrapDBBean;
+import animal.bean.ScrapDataBean;
 import animal.bean.UserDBBean;
 import animal.bean.UserDataBean;
 
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	BoardDBBean board = BoardDBBean.getinstance();
+  BoardDBBean board = BoardDBBean.getinstance();
 	UserDBBean user = UserDBBean.getinstance();
 	LikeDBBean like = LikeDBBean.getinstance();
 	DeclarationDBBean declaration = DeclarationDBBean.getinstance();
@@ -38,7 +39,6 @@ public class Controller extends HttpServlet {
 	private static String enType = "utf-8";
 	private static int maxSize = 1024 * 1024 * 1024; 
 	
-
     public Controller() {
         super();
     }
@@ -49,6 +49,12 @@ public class Controller extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
+		BoardDBBean board = BoardDBBean.getinstance();
+		UserDBBean user = UserDBBean.getinstance();
+		LikeDBBean like = LikeDBBean.getinstance();
+		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
+		ScrapDBBean scrap = ScrapDBBean.getinstance();
+		CateDBBean cate = CateDBBean.getinstance();
 		
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
@@ -129,7 +135,6 @@ public class Controller extends HttpServlet {
 				
 				if(result == 1) {
 					request.getSession().setAttribute("user_id", user_id);
-					request.getSession().setAttribute("my_available", user.getUser(user_id).getUser_available());
 					address = "index.jsp";
 				}
 				
@@ -161,13 +166,13 @@ public class Controller extends HttpServlet {
 		}
 		
 		//아이디찾기폼을 매칭시켜주는 부분
-		else if (action.equals("forget_id")) {
-			address = "forget_id.jsp";
+		else if (action.equals("forgetID")) {
+			address = "forgetID.jsp";
 		}
 		
 		//비밀번호찾기 폼을 매칭시켜주는부분
-		else if (action.equals("forget_pw")) {
-			address = "forget_pw.jsp";
+		else if (action.equals("forgetPW")) {
+			address = "forgetPW.jsp";
 		}
 		
 		//뉴스피드 글쓰기폼을 매칭시켜주는 부분
@@ -202,6 +207,28 @@ public class Controller extends HttpServlet {
 			address = "declaration.jsp";
 			}
 		
+		//스크랩함 폼을 매칭시켜주는 부분
+		else if(action.equals("scrap")){
+			request.setAttribute("user_id", request.getSession().getAttribute("user_id"));
+			address = "scrap.jsp";
+		}
+		//게시글에서 스크랩을 눌렀을 경우 스크랩 목록에 추가를 한뒤 view화면으로 돌아감
+		else if(action.equals("add_scrap")) {
+			ScrapDataBean scrapdt = new ScrapDataBean();
+			scrapdt.setUser_id((String)request.getSession().getAttribute("user_id"));
+			scrapdt.setBoard_num(Integer.parseInt(request.getParameter("board_num")));
+			scrap.add_scrap(scrapdt);
+			request.setAttribute("board_num", scrapdt.getBoard_num());
+			address = "view.jsp";
+		}
+		
+		//스크랩된 글 삭제하는 부분
+		else if(action.equals("delete_scrap")){
+			int scrap_num = Integer.parseInt(request.getParameter("scrap_num"));
+			scrap.delete(scrap_num);
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			address = "mypage.jsp";
+		}
 		//신고 DB에 저장시켜주는 부분
 		else if(action.equals("declaration_comp")){
 			DeclarationDataBean declarationdt = new DeclarationDataBean();
@@ -245,6 +272,13 @@ public class Controller extends HttpServlet {
 				request.getSession().setAttribute("messageContent", "비밀번호가 틀렸습니다.");
 				address = "Confirmpassword.jsp";
 			}
+		}
+		
+		//페이징을 처리해주는 부분
+		else if(action.equals("paging")) {
+			request.setAttribute("pageNumber", request.getParameter("pageNumber"));
+			request.setAttribute("cate_num", request.getParameter("cate_num"));
+			address = "board.jsp";
 		}
 		
 		//회원정보 수정해주는 부분
@@ -296,6 +330,12 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
+		//뉴스피드가기 누름
+		else if(action.equals("news")) {
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			address = "mypage.jsp";
+		}
+		
 		//좋아요 버튼 누른 경우
 		else if(action.equals("like")) {
 			LikeDataBean likedt = new LikeDataBean();
@@ -317,25 +357,20 @@ public class Controller extends HttpServlet {
 				address = "mypage.jsp";
 			}
 		}
-    //게시판을 누를 경우
+		
+		//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
-				String k = request.getParameter("cate_num");
-				int cate_num = Integer.parseInt(k);
-				CateDBBean cate = CateDBBean.getinstance();
-				BoardDBBean b = BoardDBBean.getinstance();
-				ArrayList<BoardDataBean> blist = b.getCateBoardList(cate_num);	//카테고리의 게시글 리스트
-				CateDataBean c = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
+				int cate_num = Integer.parseInt(request.getParameter("cate_num"));//카테고리의 게시글 리스트
+				CateDataBean catedt = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
 				request.setAttribute("cate_num", cate_num);
-				request.setAttribute("cate_name", c.getCate_name());
-				request.setAttribute("boardlist", blist);
+				request.setAttribute("cate_name", catedt.getCate_name());
 				address = "board.jsp";
 			}
+		
 			//글쓰기 확인을 누를 경우
 			else if(action.equals("writeAction")) {
-				System.out.println(1);
 				request.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
-				System.out.println(1);
 				BoardDataBean boarddt = new BoardDataBean();
 				Enumeration oldFileNames = null;
 				File oldFile = null;
@@ -343,11 +378,9 @@ public class Controller extends HttpServlet {
 		    	String board_image = "";
 		    	String newFileName = "";
 		    	int count = 1;
-		    	System.out.println(1);
 		    	//<시작>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
 				MultipartRequest multipartrequest = new MultipartRequest(request, board_path, maxSize, enType ,new DefaultFileRenamePolicy());
 				
-				System.out.println(1);
 				//파라미터값 받아오기
 				boarddt.setBoard_title(multipartrequest.getParameter("board_title"));
 				boarddt.setCate_num(Integer.parseInt(multipartrequest.getParameter("cate_num")));
@@ -355,12 +388,10 @@ public class Controller extends HttpServlet {
 				boarddt.setBoard_content(multipartrequest.getParameter("board_content"));
 				
 				System.out.println("content:"+boarddt.getBoard_content());
-				System.out.println(1);
 				//저장할 이름 생성
 				newFileName = boarddt.getCate_num() +""+ board.getNext_board() +""+ boarddt.getUser_id();
 				oldFileNames = multipartrequest.getFileNames();
 				
-				System.out.println(1);
 				//입력받은 사진들의 이름을 모두 수정
 				while(oldFileNames.hasMoreElements()) {
 					String parameter = (String)oldFileNames.nextElement();
@@ -372,35 +403,27 @@ public class Controller extends HttpServlet {
 					board_image += newFileName + count + "/";
 					count++;
 				}
-				System.out.println(1);
-				
-				boarddt.setBoard_image(board_image);
-				boarddt.setBoard_path(board_path);
 				
 			   //<끝>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
 				System.out.println(1);
 				System.out.println(boarddt.getBoard_title());
 				System.out.println(boarddt.getBoard_content());
 				if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
-					System.out.println(1);
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
 					address="write.jsp";
 				}
 				
 				else {
-					System.out.println(1);
 					int result = board.write(boarddt);
 					
 					if(result == -1) {
-						System.out.println(1);
 						request.getSession().setAttribute("messageType", "오류 메시지");
 						request.getSession().setAttribute("messageContent", "글쓰기에 실패했습니다.");
 						address="write.jsp";
 					}
 					
 					else {
-						System.out.println(1);
 						request.setAttribute("cate_num", boarddt.getCate_num());
 						address="board.jsp";
 					}

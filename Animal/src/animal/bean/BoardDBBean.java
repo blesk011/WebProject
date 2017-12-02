@@ -223,26 +223,17 @@ public class BoardDBBean {
 	}
 	//해당 게시판의 전체 게시글 list로 출력(8개씩)
 		public ArrayList<BoardDataBean> getList(int cate_num,int pageNumber){
-			String SQL1="SELECT * FROM board WHERE board_num < ?  ORDER BY board_num DESC LIMIT 8";
-			String SQL2="SELECT * FROM board WHERE board_num < ? AND cate_num = ? ORDER BY board_num DESC LIMIT 8";
+			String SQL="SELECT * FROM board WHERE board_num < ? AND news_num IS NULL ORDER BY board_num DESC LIMIT 8";
 			ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
 			try {
-				if(cate_num == 0) {
-					PreparedStatement pstmt=conn.prepareStatement(SQL1);
-					pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
-					rs=pstmt.executeQuery();
-				}
-				else {
-					PreparedStatement pstmt=conn.prepareStatement(SQL2);
-					pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
-					pstmt.setInt(2, cate_num);
-					rs=pstmt.executeQuery();
-				}
+				
+				PreparedStatement pstmt=conn.prepareStatement(SQL);
+				pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
+				rs=pstmt.executeQuery();
 
 				while(rs.next()) {
 					BoardDataBean board = new BoardDataBean();
 					board.setBoard_num(rs.getInt("board_num"));
-					board.setNews_num(rs.getInt("news_num"));
 					board.setCate_num(rs.getInt("cate_num"));
 					board.setUser_id(rs.getString("user_id"));
 					board.setBoard_title(rs.getString("board_title"));
@@ -252,8 +243,6 @@ public class BoardDBBean {
 					board.setBoard_date(rs.getString("board_date"));
 					board.setBoard_like(rs.getInt("board_like"));
 					board.setBoard_scrap(rs.getInt("board_scrap"));
-					board.setBoard_declaration(rs.getInt("board_declaration"));
-					board.setNews_visible(rs.getInt("news_visible"));
 					list.add(board);
 				}
 				return list;
@@ -338,6 +327,7 @@ public class BoardDBBean {
 		return searchNameProductList;
 	}
 	
+	/*
 	//카테고리의 게시글 리스트 출력 메소드
 	public ArrayList<BoardDataBean> getCateBoardList(int cate_num) {
 		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
@@ -349,7 +339,6 @@ public class BoardDBBean {
 			while (rs.next()) {
 				BoardDataBean board = new BoardDataBean();
 				board.setBoard_num(rs.getInt("board_num"));
-				board.setNews_num(rs.getInt("news_num"));
 				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
@@ -359,8 +348,6 @@ public class BoardDBBean {
 				board.setBoard_date(rs.getString("board_date"));
 				board.setBoard_like(rs.getInt("board_like"));
 				board.setBoard_scrap(rs.getInt("board_scrap"));
-				board.setBoard_declaration(rs.getInt("board_declaration"));
-				board.setNews_visible(rs.getInt("news_visible"));
 				list.add(board);
 			}
 		} catch (Exception e) {
@@ -376,6 +363,7 @@ public class BoardDBBean {
 		}
 		return list;
 	}
+	*/
 	
 	//현재 게시글의 총 개수를 세준다.
 	public int allCount(int cate_num) {

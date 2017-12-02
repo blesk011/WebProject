@@ -62,6 +62,9 @@
 								<td><a href="/Animal/MngrUserAction?action=appointStaff&user_id=${user.getUser_id()}">스탭 임명</a></td>
 							</c:if>
 						</c:when>
+						<c:otherwise>
+						<td>관리자</td><td>관리자</td> 
+						</c:otherwise>
 					</c:choose>
 				</tr>
 			</c:forEach>

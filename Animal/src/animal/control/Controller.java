@@ -31,6 +31,13 @@ import animal.bean.UserDataBean;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+  BoardDBBean board = BoardDBBean.getinstance();
+	UserDBBean user = UserDBBean.getinstance();
+	LikeDBBean like = LikeDBBean.getinstance();
+	DeclarationDBBean declaration = DeclarationDBBean.getinstance();
+	private static String board_path = "C:\\Users\\UNS\\Documents\\WS\\Animal\\image";
+	private static String enType = "utf-8";
+	private static int maxSize = 1024 * 1024 * 1024; 
 	
     public Controller() {
         super();
@@ -360,13 +367,10 @@ public class Controller extends HttpServlet {
 				address = "board.jsp";
 			}
 		
-		/*
 			//글쓰기 확인을 누를 경우
 			else if(action.equals("writeAction")) {
-				System.out.println(1);
 				request.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
-				System.out.println(1);
 				BoardDataBean boarddt = new BoardDataBean();
 				Enumeration oldFileNames = null;
 				File oldFile = null;
@@ -374,11 +378,9 @@ public class Controller extends HttpServlet {
 		    	String board_image = "";
 		    	String newFileName = "";
 		    	int count = 1;
-		    	System.out.println(1);
 		    	//<시작>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
 				MultipartRequest multipartrequest = new MultipartRequest(request, board_path, maxSize, enType ,new DefaultFileRenamePolicy());
 				
-				System.out.println(1);
 				//파라미터값 받아오기
 				boarddt.setBoard_title(multipartrequest.getParameter("board_title"));
 				boarddt.setCate_num(Integer.parseInt(multipartrequest.getParameter("cate_num")));
@@ -386,12 +388,10 @@ public class Controller extends HttpServlet {
 				boarddt.setBoard_content(multipartrequest.getParameter("board_content"));
 				
 				System.out.println("content:"+boarddt.getBoard_content());
-				System.out.println(1);
 				//저장할 이름 생성
 				newFileName = boarddt.getCate_num() +""+ board.getNext_board() +""+ boarddt.getUser_id();
 				oldFileNames = multipartrequest.getFileNames();
 				
-				System.out.println(1);
 				//입력받은 사진들의 이름을 모두 수정
 				while(oldFileNames.hasMoreElements()) {
 					String parameter = (String)oldFileNames.nextElement();
@@ -403,40 +403,32 @@ public class Controller extends HttpServlet {
 					board_image += newFileName + count + "/";
 					count++;
 				}
-				System.out.println(1);
-				
-				boarddt.setBoard_image(board_image);
-				boarddt.setBoard_path(board_path);
 				
 			   //<끝>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
 				System.out.println(1);
 				System.out.println(boarddt.getBoard_title());
 				System.out.println(boarddt.getBoard_content());
 				if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
-					System.out.println(1);
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
 					address="write.jsp";
 				}
 				
 				else {
-					System.out.println(1);
 					int result = board.write(boarddt);
 					
 					if(result == -1) {
-						System.out.println(1);
 						request.getSession().setAttribute("messageType", "오류 메시지");
 						request.getSession().setAttribute("messageContent", "글쓰기에 실패했습니다.");
 						address="write.jsp";
 					}
 					
 					else {
-						System.out.println(1);
 						request.setAttribute("cate_num", boarddt.getCate_num());
 						address="board.jsp";
 					}
 				}
-			}*/
+			}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}

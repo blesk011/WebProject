@@ -452,6 +452,4 @@ public class BoardDBBean {
 		}
 		return null;
 	}
-	
-	
 }

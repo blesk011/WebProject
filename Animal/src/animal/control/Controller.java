@@ -199,6 +199,11 @@ public class Controller extends HttpServlet {
 			address = "declaration.jsp";
 			}
 		
+		//스크랩함 폼을 매칭시켜주는 부분
+		else if(action.equals("scrap")){
+			request.setAttribute("user_id", request.getSession().getAttribute("user_id"));
+			address = "scrap.jsp";
+		}
 		//게시글에서 스크랩을 눌렀을 경우 스크랩 목록에 추가를 한뒤 view화면으로 돌아감
 		else if(action.equals("add_scrap")) {
 			ScrapDataBean scrapdt = new ScrapDataBean();
@@ -261,6 +266,11 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
+		else if(action.equals("paging")) {
+			request.setAttribute("pageNumber", request.getParameter("pageNumber"));
+			request.setAttribute("cate_num", request.getParameter("cate_num"));
+			address = "board.jsp";
+		}
 		//회원정보 수정해주는 부분
 		else if(action.equals("user_update_comp")) {
 			UserDataBean userdt = new UserDataBean();
@@ -310,6 +320,12 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
+		//뉴스피드가기 누름
+		else if(action.equals("news")) {
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			address = "mypage.jsp";
+		}
+		
 		//좋아요 버튼 누른 경우
 		else if(action.equals("like")) {
 			LikeDataBean likedt = new LikeDataBean();
@@ -331,7 +347,7 @@ public class Controller extends HttpServlet {
 				address = "mypage.jsp";
 			}
 		}
-    //게시판을 누를 경우
+		//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
 				String k = request.getParameter("cate_num");
 				int cate_num = Integer.parseInt(k);
@@ -344,6 +360,7 @@ public class Controller extends HttpServlet {
 				request.setAttribute("boardlist", blist);
 				address = "board.jsp";
 			}
+		/*
 			//글쓰기 확인을 누를 경우
 			else if(action.equals("writeAction")) {
 				System.out.println(1);
@@ -419,7 +436,7 @@ public class Controller extends HttpServlet {
 						address="board.jsp";
 					}
 				}
-			}
+			}*/
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}

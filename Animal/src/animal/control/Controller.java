@@ -158,13 +158,13 @@ public class Controller extends HttpServlet {
 		}
 		
 		//아이디찾기폼을 매칭시켜주는 부분
-		else if (action.equals("forget_id")) {
-			address = "forget_id.jsp";
+		else if (action.equals("forgetID")) {
+			address = "forgetId.jsp";
 		}
 		
 		//비밀번호찾기 폼을 매칭시켜주는부분
-		else if (action.equals("forget_pw")) {
-			address = "forget_pw.jsp";
+		else if (action.equals("forgetPW")) {
+			address = "forgetPw.jsp";
 		}
 		
 		//뉴스피드 글쓰기폼을 매칭시켜주는 부분

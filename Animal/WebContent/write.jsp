@@ -15,6 +15,7 @@
   <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <link href="./Resources/css/sb-admin.css" rel="stylesheet">
 </head>
+<jsp:include page="alert.jsp" />
 <body class="bg-dark">
   <div class="container">
   	<div class="card mb-3">
@@ -51,7 +52,7 @@
 						<td>내용</td>
 					</tr>
 					<tr>
-						<td><textarea rows="20" cols="20" class="form-control"></textarea></td>
+						<td><textarea rows="20" cols="20" class="form-control" name="board_content"></textarea></td>
 					</tr>
 					<tr>
 						<td>사진</td>
@@ -61,14 +62,13 @@
 					</tr>
 					<tr>
 						<td><input type="submit" class="btn btn-primary btn-block" value="글쓰기"></td>
-						<td><a class="btn btn-primary btn-block" href="board.jsp">취소</a></td>
 					</tr>
   				</table>
   			</form>
   			</div>
   		</div>
   	</div>
-  	<jsp:include page="alert.jsp" />
+  	
   	</div>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

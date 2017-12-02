@@ -402,7 +402,7 @@ public class BoardDBBean {
 			pstmt.setString(7, board.getBoard_path());
 			pstmt.setString(8, getDate());
 			//pstmt.setInt(9, 0); //조회수
-			pstmt.setInt(9, 0); //좋아요 수
+			pstmt.setInt(9, board.getBoard_like()); //좋아요 수
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -267,7 +267,8 @@ public class Controller extends HttpServlet {
 				boarddt.setCate_num(Integer.parseInt(multipartrequest.getParameter("cate_num")));
 				boarddt.setUser_id((String)request.getSession().getAttribute("user_id"));
 				boarddt.setBoard_content(multipartrequest.getParameter("board_content"));
-
+				
+				System.out.println("content:"+boarddt.getBoard_content());
 				System.out.println(1);
 				//저장할 이름 생성
 				newFileName = boarddt.getCate_num() +""+ board.getNext_board() +""+ boarddt.getUser_id();
@@ -292,10 +293,12 @@ public class Controller extends HttpServlet {
 				
 			   //<끝>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
 				System.out.println(1);
+				System.out.println(boarddt.getBoard_title());
+				System.out.println(boarddt.getBoard_content());
 				if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
+					System.out.println(1);
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
-					request.setAttribute("test", count);
 					address="write.jsp";
 				}
 				
@@ -307,7 +310,6 @@ public class Controller extends HttpServlet {
 						System.out.println(1);
 						request.getSession().setAttribute("messageType", "오류 메시지");
 						request.getSession().setAttribute("messageContent", "글쓰기에 실패했습니다.");
-						request.setAttribute("test", count);
 						address="write.jsp";
 					}
 					

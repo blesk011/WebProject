@@ -5,6 +5,7 @@ public class CateDataBean {
 	private int cate_num;
 	private String cate_name;
 	private String cate_date;
+	
 	public int getCate_num() {
 		return cate_num;
 	}

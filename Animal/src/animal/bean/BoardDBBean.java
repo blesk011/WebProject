@@ -76,11 +76,25 @@ public class BoardDBBean {
 		}
 		return "";
 	}
+  //조회수
+    public int count(int board_num,int board_hit) {
+       String SQL="UPDATE board SET board_hit = ? WHERE board_num = ?";
+
+       try {
+          PreparedStatement pstmt=conn.prepareStatement(SQL);
+          pstmt.setInt(1, board_hit);
+          pstmt.setInt(2, board_num);
+          return pstmt.executeUpdate();
+       }catch(Exception e) {
+          e.printStackTrace();
+       }
+       return -1;
+    }
 
 	//�����ǵ� �Խñ� ���
 	public int news_write(BoardDataBean board) {
 		String SQL = "INSERT INTO board (board_num,news_num,user_id,board_title,board_content,board_image,board_path,news_visible,board_date) "
-				+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, getNext_board());
@@ -92,6 +106,7 @@ public class BoardDBBean {
 			pstmt.setString(7, board.getBoard_path());
 			pstmt.setInt(8, board.getNews_visible());
 			pstmt.setString(9, getDate());
+			pstmt.setInt(10, 0);
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -153,6 +168,7 @@ public class BoardDBBean {
 				board.setBoard_scrap(rs.getInt("board_scrap"));
 				board.setBoard_declaration(rs.getInt("board_declaration"));
 				board.setNews_visible(rs.getInt("news_visible"));
+				board.setBoard_hit(count(board.getBoard_num(),board.getBoard_hit()+1));
 			}
 			return board;
 		}catch(Exception e) {
@@ -192,7 +208,7 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-
+	//좋아요 수 가져오기
 	public int like_board(int board_num,int board_like) {
 		String SQL="UPDATE board SET board_like = ? WHERE board_num = ?";
 
@@ -387,7 +403,7 @@ public class BoardDBBean {
 	
 	//DB에 입력 글쓰기
 	public int write(BoardDataBean board) {
-		String SQL="INSERT INTO board VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String SQL="INSERT INTO board VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			
@@ -399,12 +415,40 @@ public class BoardDBBean {
 			pstmt.setString(6, board.getBoard_image());
 			pstmt.setString(7, board.getBoard_path());
 			pstmt.setString(8, getDate());
-			//pstmt.setInt(9, 0); //조회수
-			pstmt.setInt(9, board.getBoard_like()); //좋아요 수
+			pstmt.setInt(9, 0); //좋아요수
+			pstmt.setInt(10, 0);//조회수
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return -1;
 	}
+	
+	 //하나의 게시글 정보를 얻어옴
+	   public BoardDataBean getBoard(int board_num) {
+	      String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
+	      try {
+	         PreparedStatement pstmt=conn.prepareStatement(SQL);
+	         pstmt.setInt(1, board_num);
+	         rs=pstmt.executeQuery();
+	         if(rs.next()) {
+	            BoardDataBean board = new BoardDataBean();
+	            board.setBoard_num(rs.getInt(1));
+	            board.setCate_num(rs.getInt(2));
+	            board.setUser_id(rs.getString(4));
+	            board.setBoard_title(rs.getString(5));
+	            board.setBoard_content(rs.getString(6));
+	            board.setBoard_image(rs.getString(7));
+	            board.setBoard_path(rs.getString(8));
+	            board.setBoard_date(rs.getString(9));
+	            board.setBoard_like(rs.getInt(10));
+	            board.setBoard_hit(rs.getInt(14));
+	            count(board.getBoard_num(),board.getBoard_hit()+1);
+	            return board;
+	         }
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      return null;
+	   }
 }

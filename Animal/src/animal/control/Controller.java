@@ -1,6 +1,9 @@
 package animal.control;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import animal.bean.BoardDBBean;
 import animal.bean.BoardDataBean;
+import animal.bean.CateDBBean;
+import animal.bean.CateDataBean;
 import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
@@ -22,7 +30,15 @@ import animal.bean.UserDataBean;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	BoardDBBean board = BoardDBBean.getinstance();
+	UserDBBean user = UserDBBean.getinstance();
+	LikeDBBean like = LikeDBBean.getinstance();
+	DeclarationDBBean declaration = DeclarationDBBean.getinstance();
+	private static String board_path = "C:\\Users\\UNS\\Documents\\WS\\Animal\\image";
+	private static String enType = "utf-8";
+	private static int maxSize = 1024 * 1024 * 1024; 
 	
+
     public Controller() {
         super();
     }
@@ -33,11 +49,7 @@ public class Controller extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
-		BoardDBBean board = BoardDBBean.getinstance();
-		UserDBBean user = UserDBBean.getinstance();
-		LikeDBBean like = LikeDBBean.getinstance();
-		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
-
+		
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
 		
@@ -392,6 +404,7 @@ public class Controller extends HttpServlet {
 						address="board.jsp";
 					}
 				}
+			}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}

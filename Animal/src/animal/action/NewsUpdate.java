@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-import animal.bean.*;
+import animal.bean.BoardDBBean;
+import animal.bean.BoardDataBean;
 
 
 @WebServlet("/NewsUpdate")

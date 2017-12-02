@@ -32,10 +32,11 @@
       <% String user_id = (String)request.getSession().getAttribute("user_id");
       	if(user_id.equals(request.getAttribute("click_id"))){%>
       	<center>
+      	<a href="./Controller?action=news"><button type="button" class="btn btn-default">뉴스피드</button></a>
       	<a href="./Controller?action=news_write"><button type="button" class="btn btn-default">글쓰기</button></a>
       	<a href="./Controller?action=confirm&goal=update_user"><button type="button" class="btn btn-default">정보 수정</button></a>
       	<a href="./Controller?action=confirm&goal=delete_user"><button type="button" class="btn btn-default">회원 탈퇴</button></a>
-      	<a href="#"><button type="button" class="btn btn-default">스크랩함</button></a>
+      	<a href="./Controller?action=scrap"><button type="button" class="btn btn-default">스크랩함</button></a>
       	</center>
       <%} %>
           <!-- Card Columns Example Social Feed-->

@@ -266,6 +266,11 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
+		else if(action.equals("paging")) {
+			request.setAttribute("pageNumber", request.getParameter("pageNumber"));
+			request.setAttribute("cate_num", request.getParameter("cate_num"));
+			address = "board.jsp";
+		}
 		//회원정보 수정해주는 부분
 		else if(action.equals("user_update_comp")) {
 			UserDataBean userdt = new UserDataBean();

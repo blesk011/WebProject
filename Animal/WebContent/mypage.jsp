@@ -78,7 +78,7 @@
                 <a class="mr-3 d-inline-block" href="./Controller?action=like&board_num=<%=boarddt.get(i).getBoard_num()%>&from=mypage">
                   <i class="fa fa-fw fa-thumbs-up"></i><%=boarddt.get(i).getBoard_like() %></a>
                 <a class="mr-3 d-inline-block" href="./Controller?action=declaration&board_num=<%=boarddt.get(i).getBoard_num()%>&news_num=<%=boarddt.get(i).getNews_num()%>">
-                  <i class="fa fa-fw fa-thumbs-up"></i>declaration</a>
+                  <i class="fa fa-fw fa-thumbs-down"></i>declaration</a>
                 <% if(user_id.equals(request.getAttribute("click_id"))){ %>
                 <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
                 	<i class="fa fa-fw fa-wrench"></i>update</a>

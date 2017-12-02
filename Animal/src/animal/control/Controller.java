@@ -1,7 +1,10 @@
 
 package animal.control;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import animal.bean.BoardDBBean;
+import animal.bean.BoardDataBean;
+import animal.bean.CateDBBean;
+import animal.bean.CateDataBean;
 import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
@@ -29,6 +38,10 @@ public class Controller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String address = null;
 		request.setCharacterEncoding("utf-8");
+		String board_path = "C:\\Users\\UNS\\Documents\\WS\\Animal\\image";
+		String enType = "utf-8";
+		int maxSize = 1024 * 1024 * 1024; 
+		
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		BoardDBBean board = BoardDBBean.getinstance();
@@ -220,8 +233,91 @@ public class Controller extends HttpServlet {
 			}
 			//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
-				request.setAttribute("cate_num", request.getParameter("cate_num"));
+				String k = request.getParameter("cate_num");
+				int cate_num = Integer.parseInt(k);
+				CateDBBean cate = CateDBBean.getinstance();
+				BoardDBBean b = BoardDBBean.getinstance();
+				ArrayList<BoardDataBean> blist = b.getCateBoardList(cate_num);	//카테고리의 게시글 리스트
+				CateDataBean c = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
+				request.setAttribute("cate_num", cate_num);
+				request.setAttribute("cate_name", c.getCate_name());
+				request.setAttribute("boardlist", blist);
 				address = "board.jsp";
+			}
+			//글쓰기 확인을 누를 경우
+			else if(action.equals("writeAction")) {
+				System.out.println(1);
+				request.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				System.out.println(1);
+				BoardDataBean boarddt = new BoardDataBean();
+				Enumeration oldFileNames = null;
+				File oldFile = null;
+				File newFile = null;
+		    	String board_image = "";
+		    	String newFileName = "";
+		    	int count = 1;
+		    	System.out.println(1);
+		    	//<시작>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
+				MultipartRequest multipartrequest = new MultipartRequest(request, board_path, maxSize, enType ,new DefaultFileRenamePolicy());
+				
+				System.out.println(1);
+				//파라미터값 받아오기
+				boarddt.setBoard_title(multipartrequest.getParameter("board_title"));
+				boarddt.setCate_num(Integer.parseInt(multipartrequest.getParameter("cate_num")));
+				boarddt.setUser_id((String)request.getSession().getAttribute("user_id"));
+				boarddt.setBoard_content(multipartrequest.getParameter("board_content"));
+
+				System.out.println(1);
+				//저장할 이름 생성
+				newFileName = boarddt.getCate_num() +""+ board.getNext_board() +""+ boarddt.getUser_id();
+				oldFileNames = multipartrequest.getFileNames();
+				
+				System.out.println(1);
+				//입력받은 사진들의 이름을 모두 수정
+				while(oldFileNames.hasMoreElements()) {
+					String parameter = (String)oldFileNames.nextElement();
+					if(multipartrequest.getOriginalFileName(parameter) == null)
+						continue;
+					oldFile = new File(board_path + "/" + multipartrequest.getOriginalFileName(parameter));
+					newFile = new File(board_path + "/" + newFileName+count);
+					oldFile.renameTo(newFile);
+					board_image += newFileName + count + "/";
+					count++;
+				}
+				System.out.println(1);
+				
+				boarddt.setBoard_image(board_image);
+				boarddt.setBoard_path(board_path);
+				
+			   //<끝>업로드 된 파일 저장---------------------------------------------------------------------------------------------------------------
+				System.out.println(1);
+				if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("")) {
+					request.getSession().setAttribute("messageType", "오류 메시지");
+					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
+					request.setAttribute("test", count);
+					address="write.jsp";
+				}
+				
+				else {
+					System.out.println(1);
+					int result = board.write(boarddt);
+					
+					if(result == -1) {
+						System.out.println(1);
+						request.getSession().setAttribute("messageType", "오류 메시지");
+						request.getSession().setAttribute("messageContent", "글쓰기에 실패했습니다.");
+						request.setAttribute("test", count);
+						address="write.jsp";
+					}
+					
+					else {
+						System.out.println(1);
+						request.setAttribute("cate_num", boarddt.getCate_num());
+						address="board.jsp";
+					}
+				}
+
 			}
 			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 			dispatcher.forward(request,response);

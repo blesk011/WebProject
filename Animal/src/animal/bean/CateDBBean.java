@@ -77,11 +77,11 @@ public class CateDBBean {
 
 	//현재 카테고리번호로 정보를 불러옴
 	public CateDataBean getBoard(int cate_num) {
-		String SQL="SELECT * FROM out_cate WHERE out_cate_num = ?";
+		String SQL="SELECT * FROM cate WHERE cate_num = ?";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, cate_num);
-			rs=pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				CateDataBean catedatabean = new CateDataBean();
 				catedatabean.setCate_num(rs.getInt(1));

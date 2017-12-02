@@ -5,17 +5,20 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="menutag"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
- <!-- Bootstrap core CSS-->
-   <link href="./Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-  <link href="./Resources/css/sb-admin.css" rel="stylesheet">
+<!-- Bootstrap core CSS-->
+<link href="./Resources/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="./Resources/vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="./Resources/vendor/datatables/dataTables.bootstrap4.css"
+	rel="stylesheet">
+<link href="./Resources/css/sb-admin.css" rel="stylesheet">
 <!-- 
-	게시글 보는 페이지
-	board.jsp에서 누른 게시글에 대한 board_num를 받아옴.
-	boardDAO의 getBoard메소드 호출을 통해 해당 게시글에 대한 정보를 boardDTO로 받아옴.
-	session id와  boardDTO()의 id와 같을 경우에만'수정','삭제'버튼이 보임.
-	최종 수정: 2017/11/05
+   게시글 보는 페이지
+   board.jsp에서 누른 게시글에 대한 board_num를 받아옴.
+   boardDAO의 getBoard메소드 호출을 통해 해당 게시글에 대한 정보를 boardDTO로 받아옴.
+   session id와  boardDTO()의 id와 같을 경우에만'수정','삭제'버튼이 보임.
+   최종 수정: 2017/11/05
 -->
 
 <!DOCTYPE>
@@ -102,19 +105,24 @@
 							</tbody>
 						</table>
 						<c:if test="${user_id ne null}">
-							<a class="mr-3 d-inline-block" href="./Controller?action=like&board_num=<%=board.getBoard_num()%>&from=Boardlike">
+							<a class="mr-3 d-inline-block"
+								href="./Controller?action=like&board_num=<%=board.getBoard_num()%>&from=Boardlike">
 								<i class="fa fa-fw fa-thumbs-up"></i><%=board.getBoard_like()%></a>
 						</c:if>
 						<%
 							if (request.getSession().getAttribute("user_id").equals(board.getUser_id())) {
 						%>
-						<a href="/Animal/Controller?action=boardAction&cate_num=<%=board.getCate_num()%>" class="btn btn-default btn-lg">목록</a>
-						<a href="/Animal/Controller?action=UpdateAction?board_num=<%=board.getBoard_num()%>" class="btn btn-default btn-lg">수정
-							<!-- <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> --></a> 
+						<a
+							href="/Animal/Controller?action=boardAction&cate_num=<%=board.getCate_num()%>"
+							class="btn btn-default btn-lg">목록</a> <a
+							href="/Animal/Controller?action=UpdateAction?board_num=<%=board.getBoard_num()%>"
+							class="btn btn-default btn-lg">수정 <!-- <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> --></a>
 						<a onclick="return confirm('정말로 삭제하시겠습니까?')"
 							href="/Animal/Controller?action=BoardDeleteAction?cate_num=<%=board.getCate_num()%>&board_num=<%=board.getBoard_num()%>"
-							class="btn btn-default btn-lg"><!-- <span
-							class="glyphicon glyphicon-trash" aria-hidden="true"></span> -->삭제</a>
+							class="btn btn-default btn-lg">
+							<!-- <span
+							class="glyphicon glyphicon-trash" aria-hidden="true"></span> -->삭제
+						</a>
 						<%
 							}
 						%>
@@ -123,7 +131,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 댓글 기능 -->
 	<div class="content-wrapper">
 		<div class="container-fluid">
@@ -132,8 +140,10 @@
 				<div class="card-body">
 					<div class="table-responsive">
 						<!-- 테이블 색 -->
-						<form method="post" action="/Animal/Controller?action=writeComment&board_num=<%=board.getBoard_num()%>&user_id=${user_id}">
-							<table class="table table-bordered" id="dataTable" width="100%" height="30" cellspacing="0">
+						<form method="post"
+							action="/Animal/Controller?action=writeComment&board_num=<%=board.getBoard_num()%>&user_id=${user_id}">
+							<table class="table table-bordered" id="dataTable" width="100%"
+								height="30" cellspacing="0">
 								<thead>
 									<tr>
 										<th colspan="4"
@@ -143,10 +153,13 @@
 								<tbody>
 									<c:if test="${user_id ne null}">
 										<tr>
-											<td colspan="4"><textarea class="form-control" placeholder="댓글  내용" name="comment_content" maxlength="200" style="height: 100px;"></textarea></td>
+											<td colspan="4"><textarea class="form-control"
+													placeholder="댓글  내용" name="comment_content" maxlength="200"
+													style="height: 100px;"></textarea></td>
 										</tr>
 										<tr>
-											<td colspan="4"><input type="submit" class="btn btn-primary" value="등록"></td>
+											<td colspan="4"><input type="submit"
+												class="btn btn-primary" value="등록"></td>
 										</tr>
 									</c:if>
 									<c:if test="${user_id eq null}">
@@ -167,19 +180,22 @@
 											if (request.getParameter("user_id").equals(list.get(i).getUser_id())) {
 													int comment_num = list.get(i).getComment_num();
 										%>
-										<td>
-											<a href="/Animal/Controller?action=updateComment&board_num=<%=board_num %>&comment_num=<%=list.get(i).getComment_num()%>" >
-											<input type=button class="btn btn-primary" value="수정">
-											</a> 
-											<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="/Animal/Controller?action=CommentDeleteAction&comment_num=<%=list.get(i).getComment_num()%>&board_num=<%=board_num%>"class="btn btn-primary">삭제</a>
-										</td>
+										<td><a
+											href="/Animal/Controller?action=updateComment&board_num=<%=board_num%>&comment_num=<%=list.get(i).getComment_num()%>">
+												<input type=button class="btn btn-primary" value="수정">
+										</a> <a onclick="return confirm('정말로 삭제하시겠습니까?')"
+											href="/Animal/Controller?action=CommentDeleteAction&comment_num=<%=list.get(i).getComment_num()%>&board_num=<%=board_num%>"
+											class="btn btn-primary">삭제</a></td>
 									</tr>
 									<%
 										} else {
 									%>
 									<td></td>
 									</tr>
-									<%}}%>
+									<%
+										}
+										}
+									%>
 								</tbody>
 							</table>
 						</form>

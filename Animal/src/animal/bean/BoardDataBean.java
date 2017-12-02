@@ -2,8 +2,8 @@ package animal.bean;
 
 public class BoardDataBean {
 	private int board_num;
-	private int news_num; //´º½ºÇÇµå¿¡¼­ ÀÛ¼ºÇÒ °æ¿ì 1
-	private int cate_num; //´º½ºÇÇµå¿¡¼­ ÀÛ¼ºÇÒ °æ¿ì null 
+	private int news_num; //ï¿½ï¿½ï¿½ï¿½ï¿½Çµå¿¡ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ 1
+	private int cate_num; //ï¿½ï¿½ï¿½ï¿½ï¿½Çµå¿¡ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ null 
 	private String user_id;
 	private String board_title;
 	private String board_content;
@@ -13,7 +13,8 @@ public class BoardDataBean {
 	private int board_like;
 	private int board_scrap;
 	private int board_declaration;
-	private int news_visible; //´º½ºÇÇµå¿¡¼­ ³ª¸¸º¸±â·Î °¡´É 0ÀÏ¶§ ¸ðµÎº¸±â 1ÀÏ¶§ ³ª¸¸º¸±â
+	private int news_visible; //ï¿½ï¿½ï¿½ï¿½ï¿½Çµå¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 0ï¿½Ï¶ï¿½ ï¿½ï¿½Îºï¿½ï¿½ï¿½ 1ï¿½Ï¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int board_hit;
 	
 	
 	public String getBoard_date() {
@@ -93,5 +94,11 @@ public class BoardDataBean {
 	}
 	public void setBoard_declaration(int board_declaration) {
 		this.board_declaration = board_declaration;
+	}
+	public int getBoard_hit() {
+		return board_hit;
+	}
+	public void setBoard_hit(int board_hit) {
+		this.board_hit = board_hit;
 	}
 }

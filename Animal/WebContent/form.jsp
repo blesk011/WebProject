@@ -56,7 +56,7 @@
           </form>
         </li>
         <c:if test="${user_id ne null}">
-          <c:if test="${user_available >= '2'}">
+          <c:if test="${my_available >= '2'}">
             <a class="nav-link" href="/Animal/mngr/mngrForm.jsp">
             	<h5><span class="nav-link-text">Manage</span></h5></a>
           </c:if>

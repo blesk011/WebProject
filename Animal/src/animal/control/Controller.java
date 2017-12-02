@@ -220,6 +220,12 @@ public class Controller extends HttpServlet {
 			address = "view.jsp";
 		}
 		
+		//뷰 폼으로 넘어가는 부분
+		else if(action.equals("view")) {
+			request.setAttribute("board_num", request.getParameter("board_num"));
+			address = "view.jsp";
+		}
+		
 		//스크랩된 글 삭제하는 부분
 		else if(action.equals("delete_scrap")){
 			int scrap_num = Integer.parseInt(request.getParameter("scrap_num"));

@@ -470,6 +470,7 @@ public class BoardDBBean {
 		return null;
 	}
 
+
 	//하나의 게시글 정보를 얻어옴
 	   public BoardDataBean getBoard(int board_num) {
 	      String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
@@ -497,5 +498,6 @@ public class BoardDBBean {
 	      }
 	      return null;
 	   }
+
 
 }

@@ -367,9 +367,10 @@ public class BoardDBBean {
 	*/
 	
 	//현재 게시글의 총 개수를 세준다.
-	public int allCount(int cate_num) {
+	public int allCount(int cate_num, int pageNumber) {
 		String SQL1 = "SELECT COUNT(*) FROM board WHERE news_num is null";
-		String SQL2 = "SELECT COUNT(*) FROM board WHERE cate_num = ? AND news_num is null";
+		String SQL2 = "SELECT COUNT(*) FROM board WHERE board_num < ? AND cate_num = ? AND news_num IS NULL ORDER BY board_num DESC";
+		/*String SQL2 = "SELECT COUNT(*) FROM board WHERE cate_num = ? AND news_num is null";*/
 		try {
 			if(cate_num == 0) {
 				PreparedStatement pstmt=conn.prepareStatement(SQL1);
@@ -377,7 +378,8 @@ public class BoardDBBean {
 			}
 			else {
 				PreparedStatement pstmt=conn.prepareStatement(SQL2);
-				pstmt.setInt(1, cate_num);
+				pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
+				pstmt.setInt(2, cate_num);
 				rs=pstmt.executeQuery();
 			}
 			if(rs.next()) {

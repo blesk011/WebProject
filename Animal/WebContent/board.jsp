@@ -63,12 +63,12 @@
 								int cate = Integer.parseInt((String)request.getAttribute("cate_num"));
 								BoardDBBean board = BoardDBBean.getinstance();
 								ArrayList<BoardDataBean> list  = board.getList(cate, pageNum);
-								length = board.allCount(cate); 
+								length = board.allCount(cate, pageNum); 
 							
 							if (list.size() == 0) {
 						%>
 									<td colspan="5" align="center">등록된 게시글이 없습니다.</td>
-									<%
+						<%
 							} else {
 								if (length % 8 == 0)
 									length = length / 8;

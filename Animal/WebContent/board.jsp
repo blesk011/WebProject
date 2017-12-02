@@ -144,11 +144,12 @@ a, a:hover {
 							height="30" cellspacing="0">
 							<thead>
 								<tr>
-									<th style="text-align: center; width: 15%;">번호</th>
-									<th style="text-align: center; width: 40%;">제목</th>
+									<th style="text-align: center; width: 10%;">번호</th>
+									<th style="text-align: center; width: 35%;">제목</th>
 									<th style="text-align: center; width: 10%;">작성자</th>
-									<th style="text-align: center; width: 20%;">작성일</th>
-									<th style="text-align: center; width: 15%;">좋아요</th>
+									<th style="text-align: center; width: 25%;">작성일</th>
+									<th style="text-aling: center; width: 10%;">조회</th>
+									<th style="text-align: center; width: 10%;">좋아요</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -189,6 +190,7 @@ a, a:hover {
 										href="view.jsp?board_num=<%=list.get(i).getBoard_num() %>&user_id=${user_id}"><%=list.get(i).getBoard_title().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")%></a>
 									<td><%=list.get(i).getUser_id()%></td>
 									<td><%=list.get(i).getBoard_date().substring(0, 11) + list.get(i).getBoard_date().substring(11, 13)+ "시" + list.get(i).getBoard_date().substring(14, 16) + "분"%></td>
+									<td><%=list.get(i).getBoard_hit() %>
 									<td><%=list.get(i).getBoard_like() %>
 								</tr>
 								<tr>

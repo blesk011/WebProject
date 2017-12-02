@@ -355,6 +355,21 @@ public class Controller extends HttpServlet {
 				request.setAttribute("click_id", board.news_getboard(likedt.getBoard_num()).getUser_id());
 				address = "mypage.jsp";
 			}
+			
+			if(from.equals("Boardlike")) {
+	               if(like.check_id(likedt) == 1) {
+	                  like.add(likedt);
+	                  board.like_board(likedt.getBoard_num(), board.getBoard(likedt.getBoard_num()).getBoard_like()+1);
+	               }
+
+	               else{
+	                  like.delete(likedt);
+	                  board.like_board(likedt.getBoard_num(), board.getBoard(likedt.getBoard_num()).getBoard_like()-1);
+	               }
+	               request.setAttribute("board_num",likedt.getBoard_num());
+	               request.setAttribute("click_id", board.getBoard(likedt.getBoard_num()).getUser_id());
+	               address = "view.jsp";
+	            }
 		}
 		
 		//게시판을 누를 경우
@@ -423,6 +438,7 @@ public class Controller extends HttpServlet {
 					}
 				}
 			}
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}

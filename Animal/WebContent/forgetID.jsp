@@ -20,22 +20,21 @@
     <div class="card card-login mx-auto mt-5">
       <div class="card-header">아이디 찾기</div>
       <div class="card-body">
-        <form method="post" action="./LoginAction">
+        <form method="post" action="showID.jsp">
           <div class="form-group">
             <label>이름</label>
             <input class="form-control" id="user_name" name="user_name" type="text" placeholder="Name">
           </div>
           <div class="form-group">
             <label>전화번호</label>
-            <input class="form-control" id="user_phone" name="user_phone" type="password" placeholder="Phone">
+            <input class="form-control" id="user_phone" name="user_phone" type="text" placeholder="Phone">
           </div>
           <!--<input type="hidden" name="action" value="login_comp">-->
           <input type="submit" class="btn btn-primary btn-block" value="찾기">
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="./Controller?action=login">로그인</a>
-          <a class="d-block small mt-3" href="./Controller?action=register">회원 가입</a>
-          <a class="d-block small" href="./Controller?action=forget_pw">비밀번호 찾기</a>
+          <a class="d-block small" href="./Controller?action=forgetPW">비밀번호 찾기</a>
         </div>
       </div>
     </div>

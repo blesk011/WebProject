@@ -223,13 +223,14 @@ public class BoardDBBean {
 	}
 	//해당 게시판의 전체 게시글 list로 출력(8개씩)
 		public ArrayList<BoardDataBean> getList(int cate_num,int pageNumber){
-			String SQL1="SELECT * FROM board WHERE board_num < ?  ORDER BY board_num DESC LIMIT 8";
+			String SQL1="SELECT * FROM board WHERE board_num < ? AND cate_num = ? ORDER BY board_num DESC LIMIT 8";
 			String SQL2="SELECT * FROM board WHERE board_num < ? AND cate_num = ? ORDER BY board_num DESC LIMIT 8";
 			ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
 			try {
 				if(cate_num == 0) {
 					PreparedStatement pstmt=conn.prepareStatement(SQL1);
 					pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
+					pstmt.setInt(2, cate_num);
 					rs=pstmt.executeQuery();
 				}
 				else {
@@ -497,5 +498,23 @@ public class BoardDBBean {
 	      return null;
 	   }
 
+	 //수정시 사용
+	   public int update(BoardDataBean board) {
+	      String SQL="UPDATE board (board_num, cate_num, user_id, board_title, board_content, board_image, board_path) SET board_num = ?, cate_num = ?, user_id=?, board_title = ?,  board_content = ?, board_image = ?, board_path = ? WHERE board_num = ?";
 
+	      try {
+	         PreparedStatement pstmt=conn.prepareStatement(SQL);
+	         pstmt.setInt(1, board.getBoard_num());
+	         pstmt.setInt(2, board.getCate_num());
+	         pstmt.setString(3, board.getUser_id());
+	         pstmt.setString(4, board.getBoard_title());
+	         pstmt.setString(5, board.getBoard_content());
+	         pstmt.setString(6, board.getBoard_image());
+	         pstmt.setString(7, board.getBoard_path());
+	         return pstmt.executeUpdate();
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }
+	      return -1;
+	   }
 }

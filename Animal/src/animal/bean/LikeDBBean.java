@@ -91,5 +91,6 @@ public class LikeDBBean {
 		}
 			return 1;	
 	}
+}
 	
 

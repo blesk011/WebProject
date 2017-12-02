@@ -1,6 +1,9 @@
 package animal.control;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,12 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+
 import animal.bean.BoardDBBean;
 import animal.bean.BoardDataBean;
+import animal.bean.CateDBBean;
+import animal.bean.CateDataBean;
 import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
 import animal.bean.LikeDataBean;
+import animal.bean.ScrapDBBean;
+import animal.bean.ScrapDataBean;
 import animal.bean.UserDBBean;
 import animal.bean.UserDataBean;
 
@@ -37,7 +46,8 @@ public class Controller extends HttpServlet {
 		UserDBBean user = UserDBBean.getinstance();
 		LikeDBBean like = LikeDBBean.getinstance();
 		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
-
+		ScrapDBBean scrap = ScrapDBBean.getinstance();
+		
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
 		
@@ -189,6 +199,23 @@ public class Controller extends HttpServlet {
 			address = "declaration.jsp";
 			}
 		
+		//게시글에서 스크랩을 눌렀을 경우 스크랩 목록에 추가를 한뒤 view화면으로 돌아감
+		else if(action.equals("add_scrap")) {
+			ScrapDataBean scrapdt = new ScrapDataBean();
+			scrapdt.setUser_id((String)request.getSession().getAttribute("user_id"));
+			scrapdt.setBoard_num(Integer.parseInt(request.getParameter("board_num")));
+			scrap.add_scrap(scrapdt);
+			request.setAttribute("board_num", scrapdt.getBoard_num());
+			address = "view.jsp";
+		}
+		
+		//스크랩된 글 삭제하는 부분
+		else if(action.equals("delete_scrap")){
+			int scrap_num = Integer.parseInt(request.getParameter("scrap_num"));
+			scrap.delete(scrap_num);
+			request.setAttribute("click_id", request.getSession().getAttribute("user_id"));
+			address = "mypage.jsp";
+		}
 		//신고 DB에 저장시켜주는 부분
 		else if(action.equals("declaration_comp")){
 			DeclarationDataBean declarationdt = new DeclarationDataBean();
@@ -392,6 +419,7 @@ public class Controller extends HttpServlet {
 						address="board.jsp";
 					}
 				}
+			}
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		dispatcher.forward(request,response);
 		}

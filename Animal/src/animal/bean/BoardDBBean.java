@@ -94,7 +94,7 @@ public class BoardDBBean {
 	//�����ǵ� �Խñ� ���
 	public int news_write(BoardDataBean board) {
 		String SQL = "INSERT INTO board (board_num,news_num,user_id,board_title,board_content,board_image,board_path,news_visible,board_date) "
-				+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+				+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, getNext_board());
@@ -106,7 +106,6 @@ public class BoardDBBean {
 			pstmt.setString(7, board.getBoard_path());
 			pstmt.setInt(8, board.getNews_visible());
 			pstmt.setString(9, getDate());
-			pstmt.setInt(10, 0);
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -405,10 +404,9 @@ public class BoardDBBean {
 	
 	//DB에 입력 글쓰기
 	public int write(BoardDataBean board) {
-		String SQL="INSERT INTO board VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String SQL="INSERT INTO board (board_num,cate_num,user_id,board_title,board_content,board_image,board_path,board_date,board_like, board_hit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
-			
 			pstmt.setInt(1, getNext_board());
 			pstmt.setInt(2, board.getCate_num());
 			pstmt.setString(3, board.getUser_id());

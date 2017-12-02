@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="animal.bean.*" %>
@@ -75,6 +76,5 @@
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <jsp:include page="alert.jsp"/>
-</body>
-
+  </body>
 </html>

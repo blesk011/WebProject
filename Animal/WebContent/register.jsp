@@ -92,7 +92,7 @@
           </div>
           <div class="form-group">
             <label>핸드폰 번호</label>
-            <input class="form-control" type="text" id="user_phone" name="user_phone" placeholder="010-xxxx-xxxx">
+            <input class="form-control" type="text" id="user_phone" name="user_phone" placeholder="Phone">
           </div>
           <input type="hidden" name="action" value="register_comp">
           <input type="submit" class="btn btn-primary btn-block" value="회원가입">

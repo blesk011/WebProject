@@ -85,7 +85,7 @@
 								for (int i = 0; i < list.size(); i++) {
 						%>
 						<td align="center"><%=list.get(i).getBoard_num() %></td>
-						<td align="center"><a href="view.jsp?board_num=<%=list.get(i).getBoard_num() %>&user_id=${user_id}"><%=list.get(i).getBoard_title().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")%></a>
+						<td align="center"><a href="./Controller?action=view&board_num=<%=list.get(i).getBoard_num() %>"><%=list.get(i).getBoard_title().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")%></a>
 						<td><%=list.get(i).getUser_id()%></td>
 						<td><%=list.get(i).getBoard_date().substring(0, 11) + list.get(i).getBoard_date().substring(11, 13)+ "시" + list.get(i).getBoard_date().substring(14, 16) + "분"%></td>
 						<td><%=list.get(i).getBoard_like() %>

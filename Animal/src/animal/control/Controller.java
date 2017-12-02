@@ -47,6 +47,7 @@ public class Controller extends HttpServlet {
 		LikeDBBean like = LikeDBBean.getinstance();
 		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
 		ScrapDBBean scrap = ScrapDBBean.getinstance();
+		CateDBBean cate = CateDBBean.getinstance();
 		
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
@@ -266,11 +267,13 @@ public class Controller extends HttpServlet {
 			}
 		}
 		
+		//페이징을 처리해주는 부분
 		else if(action.equals("paging")) {
 			request.setAttribute("pageNumber", request.getParameter("pageNumber"));
 			request.setAttribute("cate_num", request.getParameter("cate_num"));
 			address = "board.jsp";
 		}
+		
 		//회원정보 수정해주는 부분
 		else if(action.equals("user_update_comp")) {
 			UserDataBean userdt = new UserDataBean();
@@ -347,19 +350,16 @@ public class Controller extends HttpServlet {
 				address = "mypage.jsp";
 			}
 		}
+		
 		//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
-				String k = request.getParameter("cate_num");
-				int cate_num = Integer.parseInt(k);
-				CateDBBean cate = CateDBBean.getinstance();
-				BoardDBBean b = BoardDBBean.getinstance();
-				ArrayList<BoardDataBean> blist = b.getCateBoardList(cate_num);	//카테고리의 게시글 리스트
-				CateDataBean c = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
+				int cate_num = Integer.parseInt(request.getParameter("cate_num"));//카테고리의 게시글 리스트
+				CateDataBean catedt = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
 				request.setAttribute("cate_num", cate_num);
-				request.setAttribute("cate_name", c.getCate_name());
-				request.setAttribute("boardlist", blist);
+				request.setAttribute("cate_name", catedt.getCate_name());
 				address = "board.jsp";
 			}
+		
 		/*
 			//글쓰기 확인을 누를 경우
 			else if(action.equals("writeAction")) {

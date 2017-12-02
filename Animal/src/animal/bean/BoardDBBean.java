@@ -380,7 +380,6 @@ public class BoardDBBean {
 		String SQL="INSERT INTO board VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
-			
 			pstmt.setInt(1, getNext_board());
 			pstmt.setInt(2, board.getCate_num());
 			pstmt.setString(3, board.getUser_id());

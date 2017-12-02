@@ -1,3 +1,4 @@
+
 package animal.bean;
 
 public class CateDataBean {
@@ -21,7 +22,6 @@ public class CateDataBean {
 	}
 	public void setCate_date(String cate_date) {
 		this.cate_date = cate_date;
-	}
-	
-	
+	}	
 }
+

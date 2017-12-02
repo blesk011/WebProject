@@ -112,7 +112,6 @@ public class BoardDBBean {
 				BoardDataBean board = new BoardDataBean();
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setNews_num(rs.getInt("news_num"));
-				board.setCate_num(rs.getInt("cate_num"));
 				board.setUser_id(rs.getString("user_id"));
 				board.setBoard_title(rs.getString("board_title"));
 				board.setBoard_content(rs.getString("board_content"));
@@ -120,7 +119,6 @@ public class BoardDBBean {
 				board.setBoard_path(rs.getString("board_path"));
 				board.setBoard_date(rs.getString("board_date"));
 				board.setBoard_like(rs.getInt("board_like"));
-				board.setBoard_scrap(rs.getInt("board_scrab"));
 				board.setBoard_declaration(rs.getInt("board_declaration"));
 				board.setNews_visible(rs.getInt("news_visible"));
 				list.add(board);
@@ -152,7 +150,7 @@ public class BoardDBBean {
 				board.setBoard_path(rs.getString("board_path"));
 				board.setBoard_date(rs.getString("board_date"));
 				board.setBoard_like(rs.getInt("board_like"));
-				board.setBoard_scrap(rs.getInt("board_scrab"));
+				board.setBoard_scrap(rs.getInt("board_scrap"));
 				board.setBoard_declaration(rs.getInt("board_declaration"));
 				board.setNews_visible(rs.getInt("news_visible"));
 			}

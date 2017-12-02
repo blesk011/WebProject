@@ -31,10 +31,12 @@
       </ol>
       <% String user_id = (String)request.getSession().getAttribute("user_id");
       	if(user_id.equals(request.getAttribute("click_id"))){%>
+      	<center>
       	<a href="./Controller?action=news_write"><button type="button" class="btn btn-default">글쓰기</button></a>
       	<a href="./Controller?action=confirm&goal=update_user"><button type="button" class="btn btn-default">정보 수정</button></a>
       	<a href="./Controller?action=confirm&goal=delete_user"><button type="button" class="btn btn-default">회원 탈퇴</button></a>
       	<a href="#"><button type="button" class="btn btn-default">스크랩함</button></a>
+      	</center>
       <%} %>
           <!-- Card Columns Example Social Feed-->
           <div class="mb-0 mt-4">
@@ -72,8 +74,8 @@
               </div>
               <hr class="my-0">
               <div class="card-body py-2 small">
-                <a class="mr-3 d-inline-block" href="./Controller?action=news_update&board_num=<%=boarddt.get(i).getBoard_num()%>">
-                  <i class="fa fa-fw fa-thumbs-up"></i>Like</a>
+                <a class="mr-3 d-inline-block" href="./Controller?action=like&board_num=<%=boarddt.get(i).getBoard_num()%>&from=mypage">
+                  <i class="fa fa-fw fa-thumbs-up"></i><%=boarddt.get(i).getBoard_like() %></a>
                 <a class="mr-3 d-inline-block" href="./Controller?action=declaration&board_num=<%=boarddt.get(i).getBoard_num()%>&news_num=<%=boarddt.get(i).getNews_num()%>">
                   <i class="fa fa-fw fa-thumbs-up"></i>declaration</a>
                 <% if(user_id.equals(request.getAttribute("click_id"))){ %>

@@ -56,23 +56,15 @@
               <tr>
 						<%
 							int pageNum = 1;
+							int length = 0;
 							if (request.getAttribute("pageNumber") != null)
 								pageNum = Integer.parseInt((String)request.getAttribute("pageNumber"));
-							int cate = 0;
-							if (request.getAttribute("cate_num") != null)
-								cate = Integer.parseInt(request.getParameter("cate_num"));
-							int length = 0;
-							BoardDBBean board = BoardDBBean.getinstance();
-							ArrayList<BoardDataBean> list = null;
-
-							if (cate == 0) {
-								list = board.getList(0, pageNum);
-								length = board.allCount(cate);
-							} else {
-								list = board.getList(cate, pageNum);
+							if (request.getAttribute("cate_num") != null){
+								int cate = Integer.parseInt((String)request.getAttribute("cate_num"));
+								BoardDBBean board = BoardDBBean.getinstance();
+								ArrayList<BoardDataBean> list  = board.getList(cate, pageNum);
 								length = board.allCount(cate); 
-							}
-
+							
 							if (list.size() == 0) {
 						%>
 									<td colspan="5" align="center">등록된 게시글이 없습니다.</td>
@@ -90,7 +82,7 @@
 						<td><%=list.get(i).getUser_id()%></td>
 						<td><%=list.get(i).getBoard_date().substring(0, 11) + list.get(i).getBoard_date().substring(11, 13)+ "시" + list.get(i).getBoard_date().substring(14, 16) + "분"%></td>
 						<td><%=list.get(i).getBoard_like() %>
-					</tr>
+					</tr><%} %>
 					<tr>
 						<%
 								}
@@ -101,16 +93,16 @@
             </table>
             <nav>
 				<ul class="pagination">
-					<li><a href="./Controller?action=paging&PageNumber=<%=pageNum - 1%>"
+					<li><a href="./Controller?action=paging&pageNumber=<%=pageNum - 1%>&cate_num=${cate_num}"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 					<%
 						for (int j = 0; j < length; j++) {
 					%>
-					<li><a href="./Controller?action=paging&PageNumber=<%=(j + 1)%>"><%=(j + 1)%></a></li>
+					<li><a href="./Controller?action=paging&pageNumber=<%=(j + 1)%>&cate_num=${cate_num}"><%=(j + 1)%></a></li>
 					<%
 						}
 					%>
-					<li><a href="./Controller?action=paging&PageNumber=<%=pageNum + 1%>"
+					<li><a href="./Controller?action=paging&pageNumber=<%=pageNum + 1%>&cate_num=${cate_num}"
 						aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
 				</ul>
 			</nav>

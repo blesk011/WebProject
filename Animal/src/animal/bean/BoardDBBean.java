@@ -223,12 +223,13 @@ public class BoardDBBean {
 	}
 	//해당 게시판의 전체 게시글 list로 출력(8개씩)
 		public ArrayList<BoardDataBean> getList(int cate_num,int pageNumber){
-			String SQL="SELECT * FROM board WHERE board_num < ? AND news_num IS NULL ORDER BY board_num DESC LIMIT 8";
+			String SQL="SELECT * FROM board WHERE board_num < ? AND cate_num = ? AND news_num IS NULL ORDER BY board_num DESC LIMIT 8";
 			ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
 			try {
 				
 				PreparedStatement pstmt=conn.prepareStatement(SQL);
 				pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
+				pstmt.setInt(2, cate_num);
 				rs=pstmt.executeQuery();
 
 				while(rs.next()) {

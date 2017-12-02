@@ -338,6 +338,7 @@ public class BoardDBBean {
 		//DbUtil.close(conn, pstmt, rs);  //연결 해지
 		return searchNameProductList;
 	}
+	
 	//카테고리의 게시글 리스트 출력 메소드
 	public ArrayList<BoardDataBean> getCateBoardList(int cate_num) {
 		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
@@ -376,6 +377,7 @@ public class BoardDBBean {
 		}
 		return list;
 	}
+	
 	//현재 게시글의 총 개수를 세준다.
 	public int allCount(int cate_num) {
 		String SQL1 = "SELECT COUNT(*) FROM board WHERE news_num is null";
@@ -423,8 +425,52 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
+
+	 
+	//scrap수를 늘려줌
+	public int add_scrap(BoardDataBean board) {
+		String SQL="UPDATE board SET board_scrap = ? WHERE board_num = ?";
+		
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board.getBoard_scrap()+1);
+			pstmt.setInt(2, board.getBoard_num());
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
-	 //하나의 게시글 정보를 얻어옴
+	//스크랩 리스트들을 가져옴
+	public ArrayList<BoardDataBean> scrap_list(ArrayList<ScrapDataBean> scrap){
+		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
+		String SQL = "SELECT * FROM board where board_num = ?";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			for (int i = 0; i < scrap.size(); i++) {
+				pstmt.setInt(1, scrap.get(i).getBoard_num());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					BoardDataBean board = new BoardDataBean();
+					board.setBoard_num(rs.getInt("board_num"));
+					board.setUser_id(rs.getString("user_id"));
+					board.setBoard_title(rs.getString("board_title"));
+					board.setBoard_content(rs.getString("board_content"));
+					board.setBoard_image(rs.getString("board_image"));
+					board.setBoard_path(rs.getString("board_path"));
+					board.setBoard_date(rs.getString("board_date"));
+					list.add(board);
+			}
+		}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//하나의 게시글 정보를 얻어옴
 	   public BoardDataBean getBoard(int board_num) {
 	      String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
 	      try {
@@ -451,4 +497,5 @@ public class BoardDBBean {
 	      }
 	      return null;
 	   }
+
 }

@@ -129,6 +129,7 @@ public class Controller extends HttpServlet {
 				
 				if(result == 1) {
 					request.getSession().setAttribute("user_id", user_id);
+					request.getSession().setAttribute("my_available", user.getUser(user_id).getUser_available());
 					address = "index.jsp";
 				}
 				

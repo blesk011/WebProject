@@ -2,6 +2,7 @@ package animal.control;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -423,8 +424,24 @@ public class Controller extends HttpServlet {
 					}
 				}
 			}
-		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
-		dispatcher.forward(request,response);
+			else if(action.equals("searchAction")) {
+				String searchName = null;  //검색하려는 키워드
+				ArrayList<BoardDataBean> list = null;  //검색 결과를 가져올 list
+				try {  //해당 parameter가 없을 경우
+					searchName = request.getParameter("searchKeyword");
+				} catch(NullPointerException e) {  //키워드의 내용이 없을 경우
+					e.printStackTrace();
+				}
+				try {
+					list = BoardDBBean.getinstance().searchByName(searchName);
+					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
+					address="searchBoard.jsp";
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+			dispatcher.forward(request,response);
 		}
 	}
 

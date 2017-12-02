@@ -303,7 +303,7 @@ public class BoardDBBean {
 		ArrayList<BoardDataBean> searchNameProductList = new ArrayList<>();  //반환할 결과 리스트
 		if(searchName.equals(""))
 			return searchNameProductList;
-		pstmt = conn.prepareStatement("select * from board where board_title like ?");  //해당 이름을 포함하는 물품 검색
+		pstmt = conn.prepareStatement("select * from board where board_title like ? and news_num is NULL");  //해당 이름을 포함하는 물품 검색
 		pstmt.setString(1, "%" + searchName + "%");
 		rs = pstmt.executeQuery();
 		while(rs.next()) {

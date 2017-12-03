@@ -112,10 +112,12 @@
 							</tbody>
 						</table>
 						<c:if test="${user_id ne null}">
+							<span>
 							<a class="mr-3 d-inline-block"
 								href="./Controller?action=like&board_num=<%=board.getBoard_num()%>&from=Boardlike">
-								<i class="fa fa-fw fa-thumbs-up"></i><%=board.getBoard_like()%></a>
-							<a class="mr-3 d-inline-block" href="/Animal/Controller?action=boardAction&cate_num=<%=board.getCate_num()%>">목록</a>
+								<i class="fa fa-fw fa-thumbs-up"></i><%=board.getBoard_like()%></a></span>
+							<span><a class="mr-3 d-inline-block" href="/Animal/Controller?action=boardAction&cate_num=<%=board.getCate_num()%>">목록</a></span>
+							<span><a class="mr-3 d-inline-block" href="/Animal/Controller?action=add_scrap&board_num=<%=board.getBoard_num()%>">scrap</a></span>
 						</c:if>
 						<c:if test="${user_id eq null }">
 							<a

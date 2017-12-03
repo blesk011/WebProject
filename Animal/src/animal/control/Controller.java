@@ -3,6 +3,7 @@ package animal.control;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -21,7 +22,8 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import animal.bean.BoardDBBean;
 import animal.bean.BoardDataBean;
 import animal.bean.CateDBBean;
-import animal.bean.CateDataBean;
+import animal.bean.CommentDBBean;
+import animal.bean.CommentDataBean;
 import animal.bean.DeclarationDBBean;
 import animal.bean.DeclarationDataBean;
 import animal.bean.LikeDBBean;
@@ -34,7 +36,7 @@ import animal.bean.UserDataBean;
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static String board_path = "C:\\Users\\jaeyo\\eclipse-workspace\\image";
+	private static String board_path = "C:\\Users\\UNS\\Documents\\WS\\Animal\\image";
 	private static String enType = "utf-8";
 	private static int maxSize = 1024 * 1024 * 1024; 
 
@@ -54,6 +56,7 @@ public class Controller extends HttpServlet {
 		DeclarationDBBean declaration = DeclarationDBBean.getinstance();
 		ScrapDBBean scrap = ScrapDBBean.getinstance();
 		CateDBBean cate = CateDBBean.getinstance();
+		CommentDBBean comment = CommentDBBean.getinstance();
 
 		//action이 null이 아닐 경우에만 수행
 		if(action != null) {
@@ -86,6 +89,7 @@ public class Controller extends HttpServlet {
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
 					address = "register.jsp";
+
 				}
 
 				//비밀번호가 일치하지 않을 경우
@@ -185,6 +189,7 @@ public class Controller extends HttpServlet {
 				address = "mypage.jsp";
 			}
 
+
 			//타임라인 글 수정 폼을 매칭시켜주는 부분
 			else if(action.equals("news_update")) {
 				request.setAttribute("board_num",request.getParameter("board_num"));
@@ -210,7 +215,6 @@ public class Controller extends HttpServlet {
 			else if(action.equals("scrap")){
 				request.setAttribute("user_id", request.getSession().getAttribute("user_id"));
 				address = "scrap.jsp";
-
 			}
 			//게시글에서 스크랩을 눌렀을 경우 스크랩 목록에 추가를 한뒤 view화면으로 돌아감
 			else if(action.equals("add_scrap")) {
@@ -354,13 +358,16 @@ public class Controller extends HttpServlet {
 						like.add(likedt);
 						board.like_board(likedt.getBoard_num(), board.news_getboard(likedt.getBoard_num()).getBoard_like()+1);
 					}
+
 					else {
 						like.delete(likedt);
 						board.like_board(likedt.getBoard_num(), board.news_getboard(likedt.getBoard_num()).getBoard_like()-1);
 					}
+
 					request.setAttribute("click_id", board.news_getboard(likedt.getBoard_num()).getUser_id());
 					address = "mypage.jsp";
 				}
+
 				if(from.equals("Boardlike")) {
 					if(like.check_id(likedt) == 1) {
 						like.add(likedt);
@@ -379,21 +386,9 @@ public class Controller extends HttpServlet {
 
 			//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
-				String k = request.getParameter("cate_num");
-				int cate_num = Integer.parseInt(k);
-				ArrayList<BoardDataBean> blist = board.getCateBoardList(cate_num);	//카테고리의 게시글 리스트
-				CateDataBean c = cate.getBoard(cate_num); 						//카테고리의 정보 (이름, 번호)
-				request.setAttribute("cate_num", cate_num);
-				request.setAttribute("cate_name", c.getCate_name());
-				request.setAttribute("boardlist", blist);
+				request.setAttribute("cate_num", request.getParameter("cate_num"));
 				address = "board.jsp";
 			}
-			/*else if(action.equals("boardAction")) {
-			CateDataBean catedt = cate.getBoard(Integer.parseInt(request.getParameter("cate_num")));//카테고리의 정보 (이름, 번호)
-			request.setAttribute("cate_num", request.getParameter("cate_num"));
-			request.setAttribute("cate_name", catedt.getCate_name());
-			address = "board.jsp";
-		}*/
 
 			//게시판 글 쓰는 경우
 			else if(action.equals("writeAction")) {
@@ -450,18 +445,19 @@ public class Controller extends HttpServlet {
 					}
 
 					else {
+						request.setAttribute("cate_name", cate.getBoard(boarddt.getCate_num()).getCate_name());
 						request.setAttribute("cate_num", boarddt.getCate_num());
 						address="board.jsp";
 					}
 				}
 			}
-			else if(action.equals("UpdateAction")) {
-				int board_num = Integer.parseInt(request.getParameter("board_num"));
-				System.out.println(board_num);
-				request.setAttribute("board_num",board_num);
+			//게시글 수정페이지 이동
+			else if(action.equals("boardUpdate")) {
+				request.setAttribute("board_num", request.getParameter("board_num"));
 				address = "update.jsp";
 			}
-			else if(action.equals("UpdateBoard")) {
+			//게시글 수정
+			else if(action.equals("BoardUpdate")) {
 				request.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
 				BoardDataBean boarddt = new BoardDataBean();
@@ -509,7 +505,7 @@ public class Controller extends HttpServlet {
 				oldFileNames = multipartrequest.getFileNames();
 
 				if(oldFileNames != null) {
-					//새로 업로드한 파일이 있는 경우 5개 까지 저장.
+					//새로 업로드한 파일이 있는 경우 1개 까지 저장.
 					while(oldFileNames.hasMoreElements()) {
 
 						//입력받은 사진들의 이름을 모두 수정
@@ -523,7 +519,7 @@ public class Controller extends HttpServlet {
 						count++;
 
 						old_image.add(board_image);
-						if(old_image.size() > 5)
+						if(old_image.size() > 1)
 							break;
 					}
 					board_image = "";
@@ -552,7 +548,7 @@ public class Controller extends HttpServlet {
 				if(boarddt.getBoard_title() == null || boarddt.getBoard_title().equals("") || boarddt.getBoard_content() == null || boarddt.getBoard_content().equals("") ) {
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
-					response.sendRedirect("update.jsp");
+					address="update.jsp";
 					return;
 				}
 
@@ -561,11 +557,161 @@ public class Controller extends HttpServlet {
 				if(result == -1) {
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "글 수정이 실패했습니다.");
-					response.sendRedirect("update.jsp");
+					address="update.jsp";
 					return;
 				}
-				else
-					response.sendRedirect("board.jsp?cate_num="+boarddt.getCate_num());
+				else {
+					request.setAttribute("board_num", boarddt.getBoard_num());
+					address="view.jsp";
+				}
+			}
+			//게시글 삭제
+			else if(action.equals("boardDelete")) {
+				request.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+
+				int cate_num = Integer.parseInt(request.getParameter("cate_num"));
+				int board_num = Integer.parseInt(request.getParameter("board_num"));
+
+				int result = board.delete(board_num);
+
+				if(result == -1) {
+					request.getSession().setAttribute("messageType", "오류 메세지");
+					request.getSession().setAttribute("messageContent", "글 삭제를 실패했습니다.");
+					address = "view.jsp";
+				}
+
+				else {
+					request.setAttribute("cate_num", cate_num);
+					address = "board.jsp";
+				}
+			}
+			//댓글 쓰기
+			else if(action.equals("writeComment")) {
+				request.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				CommentDataBean commentdt = new CommentDataBean();
+
+				String cate_num = request.getParameter("cate_num");
+				String board_num = request.getParameter("board_num");
+				commentdt.setComment_content(request.getParameter("comment_content"));
+				commentdt.setUser_id(request.getParameter("user_id"));
+
+				if(commentdt.getComment_content() == null || commentdt.getComment_content().equals("")){
+					request.getSession().setAttribute("messageType", "오류 메시지");
+					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
+					request.setAttribute("board_num", commentdt.getBoard_num());
+					address = "view.jsp";
+				}
+
+				else if(cate_num == null || cate_num.equals("") || board_num == null || board_num.equals("") || commentdt.getUser_id() == null || commentdt.getUser_id().equals("")) {
+					request.getSession().setAttribute("messageType", "오류 메시지");
+					request.getSession().setAttribute("messageContent", "내부적인 오류입니다.");
+					request.setAttribute("board_num", commentdt.getBoard_num());
+					address = "view.jsp";
+				}
+				else {
+					commentdt.setCate_num(Integer.parseInt(cate_num));
+					commentdt.setBoard_num(Integer.parseInt(board_num));
+
+					int result = comment.write(commentdt);
+
+					if(result == -1) {
+						request.getSession().setAttribute("messageType", "오류 메시지");
+						request.getSession().setAttribute("messageContent", "댓글 작성 실패");
+						request.setAttribute("board_num", commentdt.getBoard_num());
+						address = "view.jsp";
+					}
+					else {
+						request.getSession().setAttribute("messageType", "성공 메시지");
+						request.getSession().setAttribute("messageContent", "댓글 작성을 성공했습니다.");
+						request.setAttribute("board_num", commentdt.getBoard_num());
+						address = "view.jsp";
+					}
+				}
+			}
+			//댓글 수정 폼 으로 이동
+			else if(action.equals("updatecomment")) {
+				request.setAttribute("comment_num", request.getParameter("comment_num"));
+				request.setAttribute("board_num", request.getParameter("board_num"));
+				address = "updateComment.jsp";
+			}
+			//댓글 수정
+			else if(action.equals("updateComment")) {
+				request.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				
+				CommentDataBean commentdt = new CommentDataBean();
+				commentdt.setBoard_num(Integer.parseInt(request.getParameter("board_num")));
+				commentdt.setComment_num(Integer.parseInt(request.getParameter("comment_num")));
+				commentdt.setComment_content(request.getParameter("comment_content"));
+				comment.update(commentdt);
+				
+				request.getSession().setAttribute("messageType", "성공 메시지");
+				request.getSession().setAttribute("messageContent", "댓글 수정을 성공했습니다.");
+				
+				request.setAttribute("board_num", commentdt.getBoard_num());
+				address = "view.jsp";
+			}
+			//댓글 삭제
+			else if(action.equals("deleteComment")) {
+				request.setCharacterEncoding("UTF-8");
+				response.setContentType("text/html; charset=UTF-8");
+				
+				int comment_num=Integer.parseInt(request.getParameter("comment_num"));
+				int board_num = Integer.parseInt(request.getParameter("board_num"));
+				
+				int result = comment.delete(comment_num);
+
+				if(result == -1) {
+					request.getSession().setAttribute("messageType", "오류 메시지");
+					request.getSession().setAttribute("messageContent", "댓글 삭제를 실패했습니다.");
+					request.setAttribute("board_num", board_num);
+					address = "board.jsp";
+				}
+				else {
+					request.getSession().setAttribute("messageType", "성공 메시지");
+					request.getSession().setAttribute("messageContent", "댓글 삭제를 성공했습니다.");
+					request.setAttribute("board_num", board_num);
+					address = "view.jsp";
+				}
+			}
+			else if(action.equals("searchAction")) {
+				String searchName = null;  //검색하려는 키워드
+				ArrayList<BoardDataBean> list = null;  //검색 결과를 가져올 list
+				try {  //해당 parameter가 없을 경우
+					searchName = request.getParameter("searchKeyword");
+				} catch(NullPointerException e) {  //키워드의 내용이 없을 경우
+					e.printStackTrace();
+				}
+				try {
+					list = BoardDBBean.getinstance().searchByName(searchName);
+					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
+					request.setAttribute("cate", "전체");
+					address="searchBoard.jsp";
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if(action.equals("catecorySearchAction")) {
+				String searchName = null;  //검색하려는 키워드
+				int category = -1;  //init
+				ArrayList<BoardDataBean> list = null;  //검색 결과를 가져올 list
+				try {  //해당 parameter가 없을 경우
+					searchName = request.getParameter("searchKeyword");
+					category = Integer.parseInt(request.getParameter("categoryNum"));
+				} catch(NullPointerException e) {  //키워드의 내용이 없을 경우
+					e.printStackTrace();
+				}
+				try {
+					list = BoardDBBean.getinstance().searchByNameInCategory(searchName, category);
+					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
+					request.setAttribute("cate", CateDBBean.getinstance().getCate(category).getCate_name());
+					request.setAttribute("cate_num",  category);
+					address="searchBoard.jsp";
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
 			}
 			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 			dispatcher.forward(request,response);

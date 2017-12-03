@@ -48,7 +48,7 @@
             <div class="input-group">
               <input class="form-control" type="text" placeholder=Search id="searchKeyword" name="searchKeyword">
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" type="submit">
                   <i class="fa fa-search"></i>
                 </button>
               </span>

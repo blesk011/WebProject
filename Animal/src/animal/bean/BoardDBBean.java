@@ -76,20 +76,20 @@ public class BoardDBBean {
 		}
 		return "";
 	}
-  //조회수
-    public int count(int board_num,int board_hit) {
-       String SQL="UPDATE board SET board_hit = ? WHERE board_num = ?";
+	//조회수
+	public int count(int board_num,int board_hit) {
+		String SQL="UPDATE board SET board_hit = ? WHERE board_num = ?";
 
-       try {
-          PreparedStatement pstmt=conn.prepareStatement(SQL);
-          pstmt.setInt(1, board_hit);
-          pstmt.setInt(2, board_num);
-          return pstmt.executeUpdate();
-       }catch(Exception e) {
-          e.printStackTrace();
-       }
-       return -1;
-    }
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_hit);
+			pstmt.setInt(2, board_num);
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 
 	//�����ǵ� �Խñ� ���
 	public int news_write(BoardDataBean board) {
@@ -207,7 +207,7 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-	//좋아요 수 가져오기
+	//좋아요 수 추가
 	public int like_board(int board_num,int board_like) {
 		String SQL="UPDATE board SET board_like = ? WHERE board_num = ?";
 
@@ -222,36 +222,35 @@ public class BoardDBBean {
 		return -1;
 	}
 	//해당 게시판의 전체 게시글 list로 출력(8개씩)
-		public ArrayList<BoardDataBean> getList(int cate_num,int pageNumber){
-			String SQL="SELECT * FROM board WHERE board_num < ? AND cate_num = ? AND news_num IS NULL ORDER BY board_num DESC LIMIT 8";
-			ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
-			try {
-				
-				PreparedStatement pstmt=conn.prepareStatement(SQL);
-				pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
-				pstmt.setInt(2, cate_num);
-				rs=pstmt.executeQuery();
+	public ArrayList<BoardDataBean> getList(int cate_num,int pageNumber){
+		String SQL="SELECT * FROM board WHERE board_num < ? AND news_num IS NULL ORDER BY board_num DESC LIMIT 8";
+		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
+		try {
 
-				while(rs.next()) {
-					BoardDataBean board = new BoardDataBean();
-					board.setBoard_num(rs.getInt("board_num"));
-					board.setCate_num(rs.getInt("cate_num"));
-					board.setUser_id(rs.getString("user_id"));
-					board.setBoard_title(rs.getString("board_title"));
-					board.setBoard_content(rs.getString("board_content"));
-					board.setBoard_image(rs.getString("board_image"));
-					board.setBoard_path(rs.getString("board_path"));
-					board.setBoard_date(rs.getString("board_date"));
-					board.setBoard_like(rs.getInt("board_like"));
-					board.setBoard_scrap(rs.getInt("board_scrap"));
-					list.add(board);
-				}
-				return list;
-			}catch(Exception e) {
-				e.printStackTrace();
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				BoardDataBean board = new BoardDataBean();
+				board.setBoard_num(rs.getInt("board_num"));
+				board.setCate_num(rs.getInt("cate_num"));
+				board.setUser_id(rs.getString("user_id"));
+				board.setBoard_title(rs.getString("board_title"));
+				board.setBoard_content(rs.getString("board_content"));
+				board.setBoard_image(rs.getString("board_image"));
+				board.setBoard_path(rs.getString("board_path"));
+				board.setBoard_date(rs.getString("board_date"));
+				board.setBoard_like(rs.getInt("board_like"));
+				board.setBoard_scrap(rs.getInt("board_scrap"));
+				board.setBoard_hit(rs.getInt("board_hit"));
+				list.add(board);
 			}
-			return null;
+			return list;
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		return null;
+	}
 	/*public ArrayList<BoardDataBean> getList() {
 		ArrayList<BoardDataBean> list = new ArrayList<>();
 		try {
@@ -327,7 +326,7 @@ public class BoardDBBean {
 		//DbUtil.close(conn, pstmt, rs);  //연결 해지
 		return searchNameProductList;
 	}
-	
+
 	/*
 	//카테고리의 게시글 리스트 출력 메소드
 	public ArrayList<BoardDataBean> getCateBoardList(int cate_num) {
@@ -364,13 +363,12 @@ public class BoardDBBean {
 		}
 		return list;
 	}
-	*/
-	
+	 */
+
 	//현재 게시글의 총 개수를 세준다.
-	public int allCount(int cate_num, int pageNumber) {
+	public int allCount(int cate_num) {
 		String SQL1 = "SELECT COUNT(*) FROM board WHERE news_num is null";
-		String SQL2 = "SELECT COUNT(*) FROM board WHERE board_num < ? AND cate_num = ? AND news_num IS NULL ORDER BY board_num DESC";
-		/*String SQL2 = "SELECT COUNT(*) FROM board WHERE cate_num = ? AND news_num is null";*/
+		String SQL2 = "SELECT COUNT(*) FROM board WHERE cate_num = ? AND news_num is null";
 		try {
 			if(cate_num == 0) {
 				PreparedStatement pstmt=conn.prepareStatement(SQL1);
@@ -378,8 +376,7 @@ public class BoardDBBean {
 			}
 			else {
 				PreparedStatement pstmt=conn.prepareStatement(SQL2);
-				pstmt.setInt(1, getNext_board()-(pageNumber-1)*8);
-				pstmt.setInt(2, cate_num);
+				pstmt.setInt(1, cate_num);
 				rs=pstmt.executeQuery();
 			}
 			if(rs.next()) {
@@ -392,7 +389,7 @@ public class BoardDBBean {
 		}
 		return -1;//오류
 	}
-	
+
 	//DB에 입력 글쓰기
 	public int write(BoardDataBean board) {
 		String SQL="INSERT INTO board (board_num,cate_num,user_id,board_title,board_content,board_image,board_path,board_date,board_like, board_hit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -415,11 +412,11 @@ public class BoardDBBean {
 		return -1;
 	}
 
-	 
+
 	//scrap수를 늘려줌
 	public int add_scrap(BoardDataBean board) {
 		String SQL="UPDATE board SET board_scrap = ? WHERE board_num = ?";
-		
+
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
 			pstmt.setInt(1, board.getBoard_scrap()+1);
@@ -430,7 +427,7 @@ public class BoardDBBean {
 		}
 		return -1;
 	}
-	
+
 	//스크랩 리스트들을 가져옴
 	public ArrayList<BoardDataBean> scrap_list(ArrayList<ScrapDataBean> scrap){
 		ArrayList<BoardDataBean> list = new ArrayList<BoardDataBean>();
@@ -450,8 +447,8 @@ public class BoardDBBean {
 					board.setBoard_path(rs.getString("board_path"));
 					board.setBoard_date(rs.getString("board_date"));
 					list.add(board);
+				}
 			}
-		}
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -461,32 +458,62 @@ public class BoardDBBean {
 
 
 	//하나의 게시글 정보를 얻어옴
-	   public BoardDataBean getBoard(int board_num) {
-	      String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
-	      try {
-	         PreparedStatement pstmt=conn.prepareStatement(SQL);
-	         pstmt.setInt(1, board_num);
-	         rs=pstmt.executeQuery();
-	         if(rs.next()) {
-	            BoardDataBean board = new BoardDataBean();
-	            board.setBoard_num(rs.getInt(1));
-	            board.setCate_num(rs.getInt(2));
-	            board.setUser_id(rs.getString(4));
-	            board.setBoard_title(rs.getString(5));
-	            board.setBoard_content(rs.getString(6));
-	            board.setBoard_image(rs.getString(7));
-	            board.setBoard_path(rs.getString(8));
-	            board.setBoard_date(rs.getString(9));
-	            board.setBoard_like(rs.getInt(10));
-	            board.setBoard_hit(rs.getInt(14));
-	            count(board.getBoard_num(),board.getBoard_hit()+1);
-	            return board;
-	         }
-	      }catch(Exception e) {
-	         e.printStackTrace();
-	      }
-	      return null;
-	   }
+	public BoardDataBean getBoard(int board_num) {
+		String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_num);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				BoardDataBean board = new BoardDataBean();
+				board.setBoard_num(rs.getInt(1));
+				board.setCate_num(rs.getInt(2));
+				board.setUser_id(rs.getString(4));
+				board.setBoard_title(rs.getString(5));
+				board.setBoard_content(rs.getString(6));
+				board.setBoard_image(rs.getString(7));
+				board.setBoard_path(rs.getString(8));
+				board.setBoard_date(rs.getString(9));
+				board.setBoard_like(rs.getInt(10));
+				board.setBoard_hit(rs.getInt(14));
+				count(board.getBoard_num(),board.getBoard_hit()+1);
+				return board;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//게시글 수정
+	public int update(BoardDataBean board) {
+		String SQL="UPDATE board SET board_title = ?, board_content = ?, board_image = ?, board_path = ? WHERE board_num = ?";
 
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setString(1, board.getBoard_title());
+			pstmt.setString(2, board.getBoard_content());
+			pstmt.setString(3, board.getBoard_image());
+			pstmt.setString(4, board.getBoard_path());
+			pstmt.setInt(5, board.getBoard_num());
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	//게시글 삭제
+	public int delete(int board_num) {
+		String SQL="delete from board WHERE board_num = ?";
 
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			pstmt.setInt(1, board_num);
+			return pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }
+
+

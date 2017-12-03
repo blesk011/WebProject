@@ -37,7 +37,7 @@
 		%>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="">
           <a class="nav-link" href="/Animal/Controller?action=boardAction&cate_num=<%=cate.getCate_num()%>">
-            <span class="nav-link-text"><h5><%=cate.getCate_name() %></h5></span>
+            <span class="nav-link-text"><h5><%=cate.getCate_name()%></h5></span>
           </a>
         </li>
         <%} %>

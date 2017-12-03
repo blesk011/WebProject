@@ -387,7 +387,6 @@ public class Controller extends HttpServlet {
 			//게시판을 누를 경우
 			else if(action.equals("boardAction")) {
 				request.setAttribute("cate_num", request.getParameter("cate_num"));
-				System.out.println(request.getAttribute("cate_num"));
 				address = "board.jsp";
 			}
 
@@ -455,7 +454,6 @@ public class Controller extends HttpServlet {
 			//게시글 수정페이지 이동
 			else if(action.equals("boardUpdate")) {
 				request.setAttribute("board_num", request.getParameter("board_num"));
-				System.out.println(request.getAttribute("board_num"));
 				address = "update.jsp";
 			}
 			//게시글 수정

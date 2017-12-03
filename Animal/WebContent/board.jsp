@@ -113,15 +113,6 @@
         </div>
         <div class="card-footer small text-muted"></div>
       </div>
-    </div>
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
-    <footer class="sticky-footer">
-      <div class="container">
-        <div class="text-center">
-          <small>Copyright © Animal 2017</small>
-        </div>
-      </div>
       <form class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="/Animal/Controller?action=catecorySearchAction">
             <div class="input-group">
               <input class="form-control" type="text" placeholder=카테고리검색 id="searchKeyword" name="searchKeyword">
@@ -133,6 +124,15 @@
               </span>
             </div>
           </form>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Animal 2017</small>
+        </div>
+      </div>
     </footer>
     
     <!-- Bootstrap core JavaScript-->

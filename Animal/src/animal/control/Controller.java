@@ -476,6 +476,7 @@ public class Controller extends HttpServlet {
 					list = BoardDBBean.getinstance().searchByNameInCategory(searchName, category);
 					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
 					request.setAttribute("cate", CateDBBean.getinstance().getCate(category).getCate_name());
+					request.setAttribute("cate_num",  category);
 					address="searchBoard.jsp";
 				} catch(SQLException e) {
 					e.printStackTrace();

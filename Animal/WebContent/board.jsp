@@ -6,33 +6,39 @@
 <head>
 <meta charset="utf-8">
 
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title></title>
-  <link href="./Resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="./Resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link href="./Resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-  <link href="./Resources/css/sb-admin.css" rel="stylesheet">
-  <link href="css/paging.css" rel="stylesheet">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title></title>
+<link href="./Resources/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="./Resources/vendor/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="./Resources/vendor/datatables/dataTables.bootstrap4.css"
+	rel="stylesheet">
+<link href="./Resources/css/sb-admin.css" rel="stylesheet">
+<link href="css/paging.css" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <!-- Navigation-->
+	<!-- Navigation-->
   <jsp:include page="form.jsp" />
-  <style type="text/css">
-	a, a:hover {
-	color: #000000;
-	text-decoration: none;
-	};
-</style>
   <br>
   <div class="content-wrapper">
+  <style type="text/css">
+a, a:hover {
+	color: #000000;
+	text-decoration: none;
+}
+;
+</style>
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#"><c:out value="${cate_name}"></c:out></a>
+        	<a href="#"></a>
+          <%-- <a href="/Animal/Controller?action=boardAction&cate_num=${cate_num}"><c:out value="${cate_name }"></c:out></a> --%>
         </li>
         <li class="breadcrumb-item active">게시판</li>
       </ol>
@@ -42,47 +48,52 @@
           <i class="fa fa-table"></i> Data Table Example</div> -->
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" height="30" cellspacing="0" align="center">
+            <table class="table table-bordered" id="dataTable" width="100%" height="30" cellspacing="0">
               <thead>
                 <tr>
                   <th style="text-align:center; width:15%;">번호</th>
                   <th style="text-align:center; width:40%;">제목</th>
-                  <th style="text-align:center; width:10%;">작성자</th>
+                  <th style="text-align:center; width:15%;">작성자</th>
                   <th style="text-align:center; width:20%;">작성일</th>
-                  <th style="text-align:center; width:15%;">좋아요</th>
+                  <th style="text-align:center; width:10%;">조회</th>
                 </tr>
               </thead>
               <tbody>
               <tr>
 						<%
 							int pageNum = 1;
+							if (request.getParameter("pageNumber") != null)
+								pageNum = Integer.parseInt(request.getParameter("pageNumber"));
+							int cate = 0;
+							if (request.getParameter("cate_num") != null)
+								cate = Integer.parseInt(request.getParameter("cate_num"));
 							int length = 0;
-							if (request.getAttribute("pageNumber") != null)
-								pageNum = Integer.parseInt((String)request.getAttribute("pageNumber"));
-							if (request.getAttribute("cate_num") != null){
-								int cate = Integer.parseInt((String)request.getAttribute("cate_num"));
-								BoardDBBean board = BoardDBBean.getinstance();
-								ArrayList<BoardDataBean> list  = board.getList(cate, pageNum);
-								length = board.allCount(cate, pageNum); 
-							
+							BoardDBBean board = BoardDBBean.getinstance();
+							ArrayList<BoardDataBean> list = null;
+							if (cate == 0) {
+								list = board.getList(0, pageNum);
+								length = board.allCount(cate);
+							} else {
+								list = board.getList(cate, pageNum);
+								length = board.allCount(cate); 
+							}
 							if (list.size() == 0) {
 						%>
-									<td colspan="5" align="center">등록된 게시글이 없습니다.</td>
+						<td colspan="5"align="center">등록된 게시글이 없습니다.</td>
 						<%
 							} else {
 								if (length % 8 == 0)
 									length = length / 8;
 								else if ((length % 8) != 0)
 									length = length / 8 + 1;
-
 								for (int i = 0; i < list.size(); i++) {
 						%>
-						<td align="center"><%=list.get(i).getBoard_num() %></td>
-						<td align="center"><a href="./Controller?action=view&board_num=<%=list.get(i).getBoard_num() %>"><%=list.get(i).getBoard_title().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")%></a>
-						<td><%=list.get(i).getUser_id()%></td>
-						<td><%=list.get(i).getBoard_date().substring(0, 11) + list.get(i).getBoard_date().substring(11, 13)+ "시" + list.get(i).getBoard_date().substring(14, 16) + "분"%></td>
-						<td><%=list.get(i).getBoard_like() %>
-					</tr><%} %>
+						<td style="text-align:center; width:15%;"><%=list.get(i).getBoard_num() %></td>
+						<td style="text-align:center; width:40%;"><a href="/Animal/Controller?action=view&board_num=<%=list.get(i).getBoard_num()%>"><%=list.get(i).getBoard_title().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")%></a>
+						<td style="text-align:center; width:15%;"><a href="/Animal/Controller?action=mypage&click_id=<%=list.get(i).getUser_id()%>"><%=list.get(i).getUser_id()%></a></td>
+						<td style="text-align:center; width:20%;"><%=list.get(i).getBoard_date().substring(0, 11) + list.get(i).getBoard_date().substring(11, 13)+ "시" + list.get(i).getBoard_date().substring(14, 16) + "분"%></td>
+						<td style="text-align:center; width:10%;"><%=list.get(i).getBoard_hit() %>
+					</tr>
 					<tr>
 						<%
 								}
@@ -93,21 +104,21 @@
             </table>
             <nav>
 				<ul class="pagination">
-					<li><a href="./Controller?action=paging&pageNumber=<%=pageNum - 1%>&cate_num=${cate_num}"
+					<li><a href="/Animal/Controller?action=paging&pageNumber=<%=pageNum - 1%>&cate_num=${cate_num}"
 						aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 					<%
 						for (int j = 0; j < length; j++) {
 					%>
-					<li><a href="./Controller?action=paging&pageNumber=<%=(j + 1)%>&cate_num=${cate_num}"><%=(j + 1)%></a></li>
+					<li><a href="/Animal/Controller?action=paging&pageNumber=<%=(j + 1)%>&cate_num=${cate_num}"><%=(j + 1)%></a></li>
 					<%
 						}
 					%>
-					<li><a href="./Controller?action=paging&pageNumber=<%=pageNum + 1%>&cate_num=${cate_num}"
+					<li><a href="/Animal/Controller?action=paging&pageNumber<%=pageNum + 1%>&cate_num=${cate_num}"
 						aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
 				</ul>
 			</nav>
 			<c:if test="${user_id ne null}">
-				<a href="./Controller?action=write" class='btn btn-primary pull-right'>글쓰기</a>
+				<a href="write.jsp" class='btn btn-primary pull-right'>글쓰기</a>
 			</c:if>
           </div>
         </div>

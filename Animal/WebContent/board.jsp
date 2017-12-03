@@ -124,6 +124,17 @@ a, a:hover {
         </div>
         <div class="card-footer small text-muted"></div>
       </div>
+      <form class="form-inline my-2 my-lg-0 mr-lg-2" method="post" action="/Animal/Controller?action=catecorySearchAction">
+            <div class="input-group">
+              <input class="form-control" type="text" placeholder=카테고리검색 id="searchKeyword" name="searchKeyword">
+              <input type="hidden" id="categoryNum" name="categoryNum" value="${cate_num}">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

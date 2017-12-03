@@ -457,7 +457,7 @@ public class BoardDBBean {
 	}
 
 
-	//하나의 게시글 정보를 얻어옴
+
 	public BoardDataBean getBoard(int board_num) {
 		String SQL="SELECT * FROM board WHERE board_num = ? and news_num is null";
 		try {
@@ -484,6 +484,48 @@ public class BoardDBBean {
 		}
 		return null;
 	}
+	/**
+	 * 
+	 * @param searchName
+	 * @return 결과 list 반환
+	 * @throws SQLException
+	 * 카테고리 내에서 이름으로 물품을 검색하는 메소드
+	 */
+	public ArrayList<BoardDataBean> searchByNameInCategory(String searchName, int categoryNum) throws SQLException{
+		//conn = getConnection();  //connection 연결
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		ArrayList<BoardDataBean> searchNameProductList = new ArrayList<>();  //반환할 결과 리스트
+		if(searchName.equals(""))
+			return searchNameProductList;
+		pstmt = conn.prepareStatement("select * from board where board_title like ? and cate_num = ? and news_num is NULL");  //해당 이름을 포함하는 물품 검색
+		pstmt.setString(1, "%" + searchName + "%");
+		pstmt.setInt(2, categoryNum);
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			//각 dto 변수 저장
+			BoardDataBean board = new BoardDataBean();
+			board.setBoard_num(rs.getInt("board_num"));
+			board.setNews_num(rs.getInt("news_num"));
+			board.setCate_num(rs.getInt("cate_num"));
+			board.setUser_id(rs.getString("user_id"));
+			board.setBoard_title(rs.getString("board_title"));
+			board.setBoard_content(rs.getString("board_content"));
+			board.setBoard_image(rs.getString("board_image"));
+			board.setBoard_path(rs.getString("board_path"));
+			board.setBoard_date(rs.getString("board_date"));
+			board.setBoard_like(rs.getInt("board_like"));
+			board.setBoard_scrap(rs.getInt("board_scrap"));
+			board.setBoard_declaration(rs.getInt("board_declaration"));
+			board.setNews_visible(rs.getInt("news_visible"));
+			searchNameProductList.add(board);  //리스트에 추가
+		}
+		//DbUtil.close(conn, pstmt, rs);  //연결 해지
+		System.out.println(searchNameProductList.size());
+		return searchNameProductList;
+	}
+
 	//게시글 수정
 	public int update(BoardDataBean board) {
 		String SQL="UPDATE board SET board_title = ?, board_content = ?, board_image = ?, board_path = ? WHERE board_num = ?";

@@ -134,4 +134,30 @@ public class CateDBBean {
 		}
 		return true;
 	}
+	public CateDataBean getCate(int cate_num) {
+		String sql = "select * from cate where cate_num = ?";
+		CateDataBean catedatabean = new CateDataBean();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cate_num);
+			rs = pstmt.executeQuery();
+					
+			if(rs.next()) {
+				catedatabean.setCate_num(rs.getInt(1));
+				catedatabean.setCate_name(rs.getString(2));
+				catedatabean.setCate_date(rs.getString(3));
+			}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rs !=null) rs.close();
+					if(pstmt !=null) pstmt.close();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return catedatabean;
+		}
 }

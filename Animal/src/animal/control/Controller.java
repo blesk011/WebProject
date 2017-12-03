@@ -3,6 +3,7 @@ package animal.control;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -88,6 +89,7 @@ public class Controller extends HttpServlet {
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
 					address = "register.jsp";
+
 				}
 
 				//비밀번호가 일치하지 않을 경우
@@ -186,6 +188,7 @@ public class Controller extends HttpServlet {
 				request.setAttribute("click_id", request.getParameter("click_id"));
 				address = "mypage.jsp";
 			}
+
 
 			//타임라인 글 수정 폼을 매칭시켜주는 부분
 			else if(action.equals("news_update")) {
@@ -675,7 +678,43 @@ public class Controller extends HttpServlet {
 					address = "view.jsp";
 				}
 			}
-
+			else if(action.equals("searchAction")) {
+				String searchName = null;  //검색하려는 키워드
+				ArrayList<BoardDataBean> list = null;  //검색 결과를 가져올 list
+				try {  //해당 parameter가 없을 경우
+					searchName = request.getParameter("searchKeyword");
+				} catch(NullPointerException e) {  //키워드의 내용이 없을 경우
+					e.printStackTrace();
+				}
+				try {
+					list = BoardDBBean.getinstance().searchByName(searchName);
+					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
+					request.setAttribute("cate", "전체");
+					address="searchBoard.jsp";
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			else if(action.equals("catecorySearchAction")) {
+				String searchName = null;  //검색하려는 키워드
+				int category = -1;  //init
+				ArrayList<BoardDataBean> list = null;  //검색 결과를 가져올 list
+				try {  //해당 parameter가 없을 경우
+					searchName = request.getParameter("searchKeyword");
+					category = Integer.parseInt(request.getParameter("categoryNum"));
+				} catch(NullPointerException e) {  //키워드의 내용이 없을 경우
+					e.printStackTrace();
+				}
+				try {
+					list = BoardDBBean.getinstance().searchByNameInCategory(searchName, category);
+					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
+					request.setAttribute("cate", CateDBBean.getinstance().getCate(category).getCate_name());
+					request.setAttribute("cate_num",  category);
+					address="searchBoard.jsp";
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 			dispatcher.forward(request,response);
 		}

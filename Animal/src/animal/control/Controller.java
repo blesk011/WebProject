@@ -2,8 +2,8 @@ package animal.control;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -89,7 +89,6 @@ public class Controller extends HttpServlet {
 					request.getSession().setAttribute("messageType", "오류 메시지");
 					request.getSession().setAttribute("messageContent", "모든 내용을 입력하세요.");
 					address = "register.jsp";
-
 				}
 
 				//비밀번호가 일치하지 않을 경우
@@ -188,7 +187,6 @@ public class Controller extends HttpServlet {
 				request.setAttribute("click_id", request.getParameter("click_id"));
 				address = "mypage.jsp";
 			}
-
 
 			//타임라인 글 수정 폼을 매칭시켜주는 부분
 			else if(action.equals("news_update")) {
@@ -640,16 +638,16 @@ public class Controller extends HttpServlet {
 			else if(action.equals("updateComment")) {
 				request.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
-				
+
 				CommentDataBean commentdt = new CommentDataBean();
 				commentdt.setBoard_num(Integer.parseInt(request.getParameter("board_num")));
 				commentdt.setComment_num(Integer.parseInt(request.getParameter("comment_num")));
 				commentdt.setComment_content(request.getParameter("comment_content"));
 				comment.update(commentdt);
-				
+
 				request.getSession().setAttribute("messageType", "성공 메시지");
 				request.getSession().setAttribute("messageContent", "댓글 수정을 성공했습니다.");
-				
+
 				request.setAttribute("board_num", commentdt.getBoard_num());
 				address = "view.jsp";
 			}
@@ -657,10 +655,10 @@ public class Controller extends HttpServlet {
 			else if(action.equals("deleteComment")) {
 				request.setCharacterEncoding("UTF-8");
 				response.setContentType("text/html; charset=UTF-8");
-				
+
 				int comment_num=Integer.parseInt(request.getParameter("comment_num"));
 				int board_num = Integer.parseInt(request.getParameter("board_num"));
-				
+
 				int result = comment.delete(comment_num);
 
 				if(result == -1) {
@@ -689,7 +687,7 @@ public class Controller extends HttpServlet {
 					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
 					request.setAttribute("cate", "전체");
 					address="searchBoard.jsp";
-				} catch(SQLException e) {
+				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -707,12 +705,12 @@ public class Controller extends HttpServlet {
 					list = BoardDBBean.getinstance().searchByNameInCategory(searchName, category);
 					request.setAttribute("searchResultList", list);  //검색 결과 리스트 attribute에 저장
 					request.setAttribute("cate", CateDBBean.getinstance().getCate(category).getCate_name());
-					request.setAttribute("cate_num",  category);
 					address="searchBoard.jsp";
-				} catch(SQLException e) {
+				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
+
 			RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 			dispatcher.forward(request,response);
 		}

@@ -116,6 +116,7 @@
 								href="./Controller?action=like&board_num=<%=board.getBoard_num()%>&from=Boardlike">
 								<i class="fa fa-fw fa-thumbs-up"></i><%=board.getBoard_like()%></a>
 							<a class="mr-3 d-inline-block" href="/Animal/Controller?action=boardAction&cate_num=<%=board.getCate_num()%>">목록</a>
+							<a class="mr-3 d-inline-block" href="/Animal/Controller?action=add_scrap&board_num=<%=board.getBoard_num()%>">scrap</a>
 						</c:if>
 						<c:if test="${user_id eq null }">
 							<a

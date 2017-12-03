@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;;
-
+import java.util.ArrayList;
+import animal.bean.UserDataBean;
 public class UserDBBean {
 	private Connection conn = null;
 	private PreparedStatement pstmt;
